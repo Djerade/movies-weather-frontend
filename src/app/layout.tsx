@@ -1,7 +1,9 @@
 import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
-import { ChakraProvider } from '@chakra-ui/react';
 import { ApolloWrapper } from '@/lib/apollo-wrapper';
+import { AuthProvider } from '@/lib/auth-provider';
+import { ChakraProviderWrapper } from '@/lib/theme';
+import { ThemeProvider } from '@/lib/theme-context';
 import './globals.css';
 
 const geistSans = Geist({
@@ -29,11 +31,13 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <ChakraProvider>
-          <ApolloWrapper>
-            {children}
-          </ApolloWrapper>
-        </ChakraProvider>
+        <ChakraProviderWrapper>
+          <ThemeProvider>
+            <ApolloWrapper>
+              <AuthProvider>{children}</AuthProvider>
+            </ApolloWrapper>
+          </ThemeProvider>
+        </ChakraProviderWrapper>
       </body>
     </html>
   );

@@ -1,17 +1,19 @@
 'use client';
 
-import { ApolloProvider, ApolloClient, InMemoryCache, createHttpLink } from '@apollo/client';
+import { ApolloClient, InMemoryCache, createHttpLink } from '@apollo/client';
+import { ApolloProvider } from '@apollo/client/react';
 import { setContext } from '@apollo/client/link/context';
-import { ReactNode } from 'react';
 
 const httpLink = createHttpLink({
-  uri: process.env.NEXT_PUBLIC_GRAPHQL_ENDPOINT || 'http://localhost:4000/graphql',
+  uri:
+    process.env.NEXT_PUBLIC_GRAPHQL_ENDPOINT || 'http://localhost:4000/graphql',
 });
 
 const authLink = setContext((_, { headers }) => {
   // Get the authentication token from local storage if it exists
-  const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
-  
+  const token =
+    typeof window !== 'undefined' ? localStorage.getItem('token') : null;
+
   // Return the headers to the context so httpLink can read them
   return {
     headers: {
@@ -34,10 +36,6 @@ const client = new ApolloClient({
   },
 });
 
-interface ApolloWrapperProps {
-  children: ReactNode;
-}
-
-export const ApolloWrapper = ({ children }: ApolloWrapperProps) => {
+export function ApolloWrapper({ children }: { children: React.ReactNode }) {
   return <ApolloProvider client={client}>{children}</ApolloProvider>;
-};
+}

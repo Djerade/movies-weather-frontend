@@ -1,20 +1,53 @@
+import { DefaultSession } from 'next-auth';
+
+declare module 'next-auth' {
+  interface Session {
+    user: {
+      id: string;
+    } & DefaultSession['user'];
+  }
+}
+
+export interface User {
+  id: string;
+  email: string;
+  name: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
 export interface Movie {
   id: string;
   title: string;
-  overview: string;
-  poster_path: string;
-  release_date: string;
-  vote_average: number;
-  genre_ids: number[];
+  description: string;
+  releaseDate: string;
+  rating: number;
+  genre: string[];
+  posterUrl?: string;
+  backdropUrl?: string;
 }
 
-export interface Weather {
+export interface WeatherData {
   id: string;
-  city: string;
-  country: string;
+  location: string;
   temperature: number;
   description: string;
   humidity: number;
-  wind_speed: number;
-  icon: string;
+  windSpeed: number;
+  timestamp: string;
+}
+
+export interface ApiResponse<T> {
+  data: T;
+  message?: string;
+  success: boolean;
+}
+
+export interface PaginatedResponse<T> {
+  data: T[];
+  total: number;
+  page: number;
+  limit: number;
+  hasNext: boolean;
+  hasPrev: boolean;
 }
