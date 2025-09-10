@@ -13,9 +13,6 @@ export default function HomePage() {
       <Container maxW="container.xl" py={8}>
         <VStack gap={8}>
           <Box textAlign="center">
-            <Heading as="h1" size="2xl" mb={4}>
-              Movies & Weather App
-            </Heading>
             <Text fontSize="lg" color={textColor}>
               A modern application for discovering movies and checking weather
             </Text>

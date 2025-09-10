@@ -14,7 +14,7 @@ export const Layout = ({ children }: LayoutProps) => {
 
   return (
     <Box minH="100vh" bg={bg} color={color}>
-      <Header />
+   
       <Box as="main" minH="calc(100vh - 64px)">
         {children}
       </Box>
