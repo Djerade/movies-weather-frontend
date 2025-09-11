@@ -1,4 +1,18 @@
+"use client";
+
+import { useAuth } from "@/lib/hooks/useAuth";
+import { useState } from "react";
+
 export default function HomePage() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const { login, isLoading, error } = useAuth();
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    await login(email, password);
+  };
+
   return (
     <div style={{ padding: "2rem", maxWidth: "400px", margin: "0 auto" }}>
       <div style={{ textAlign: "center", marginBottom: "2rem" }}>
@@ -8,7 +22,26 @@ export default function HomePage() {
         <p style={{ color: "#666" }}>Sign in to your account to continue</p>
       </div>
 
-      <form style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
+      {error && (
+        <div
+          style={{
+            padding: "0.75rem",
+            backgroundColor: "#fee2e2",
+            border: "1px solid #fca5a5",
+            borderRadius: "4px",
+            color: "#dc2626",
+            marginBottom: "1rem",
+            fontSize: "0.875rem",
+          }}
+        >
+          {error}
+        </div>
+      )}
+
+      <form
+        onSubmit={handleSubmit}
+        style={{ display: "flex", flexDirection: "column", gap: "1rem" }}
+      >
         <div>
           <label
             style={{
@@ -21,7 +54,10 @@ export default function HomePage() {
           </label>
           <input
             type="email"
+            value={email}
+            onChange={e => setEmail(e.target.value)}
             placeholder="Enter your email"
+            required
             style={{
               width: "100%",
               padding: "0.75rem",
@@ -44,7 +80,10 @@ export default function HomePage() {
           </label>
           <input
             type="password"
+            value={password}
+            onChange={e => setPassword(e.target.value)}
             placeholder="Enter your password"
+            required
             style={{
               width: "100%",
               padding: "0.75rem",
@@ -57,18 +96,19 @@ export default function HomePage() {
 
         <button
           type="submit"
+          disabled={isLoading}
           style={{
             width: "100%",
             padding: "0.75rem",
-            backgroundColor: "#3182ce",
+            backgroundColor: isLoading ? "#9ca3af" : "#3182ce",
             color: "white",
             border: "none",
             borderRadius: "4px",
             fontSize: "1rem",
-            cursor: "pointer",
+            cursor: isLoading ? "not-allowed" : "pointer",
           }}
         >
-          Sign In
+          {isLoading ? "Signing in..." : "Sign In"}
         </button>
 
         <p style={{ textAlign: "center", fontSize: "0.875rem", color: "#666" }}>

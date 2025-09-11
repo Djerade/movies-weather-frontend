@@ -38,7 +38,7 @@ jobs:
       - name: Lint code check
         run: yarn lint
 
-      - name: Check formatting 
+      - name: Check formatting
         run: yarn format
 
       - name: Check formatting check
