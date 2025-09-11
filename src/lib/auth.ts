@@ -1,13 +1,13 @@
-import { NextAuthOptions } from 'next-auth';
-import CredentialsProvider from 'next-auth/providers/credentials';
+import { NextAuthOptions } from "next-auth";
+import CredentialsProvider from "next-auth/providers/credentials";
 
 export const authOptions: NextAuthOptions = {
   providers: [
     CredentialsProvider({
-      name: 'credentials',
+      name: "credentials",
       credentials: {
-        email: { label: 'Email', type: 'email' },
-        password: { label: 'Password', type: 'password' },
+        email: { label: "Email", type: "email" },
+        password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
         if (!credentials?.email || !credentials?.password) {
@@ -20,9 +20,9 @@ export const authOptions: NextAuthOptions = {
           const response = await fetch(
             `${process.env.NEXT_PUBLIC_API_URL}/auth/login`,
             {
-              method: 'POST',
+              method: "POST",
               headers: {
-                'Content-Type': 'application/json',
+                "Content-Type": "application/json",
               },
               body: JSON.stringify({
                 email: credentials.email,
@@ -45,7 +45,7 @@ export const authOptions: NextAuthOptions = {
             };
           }
         } catch (error) {
-          console.error('Authentication error:', error);
+          console.error("Authentication error:", error);
         }
 
         return null;
@@ -53,7 +53,7 @@ export const authOptions: NextAuthOptions = {
     }),
   ],
   session: {
-    strategy: 'jwt',
+    strategy: "jwt",
   },
   callbacks: {
     async jwt({ token, user }) {
@@ -70,6 +70,6 @@ export const authOptions: NextAuthOptions = {
     },
   },
   pages: {
-    signIn: '/auth/signin',
+    signIn: "/auth/signin",
   },
 };
