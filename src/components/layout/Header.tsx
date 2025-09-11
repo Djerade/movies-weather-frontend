@@ -1,6 +1,6 @@
 "use client";
 
-import { ThemeToggle } from "@/components/ui/ThemeToggle";
+// import { ThemeToggle } from "@/components/ui/ThemeToggle";
 import { useTheme } from "@/lib/theme-context";
 import { Box, Flex, Heading } from "@chakra-ui/react";
 
@@ -27,7 +27,7 @@ export const Header = () => {
         <Heading size="lg" color={textColor}>
           Movies & Weather App
         </Heading>
-        <ThemeToggle />
+        {/* <ThemeToggle /> */}
       </Flex>
     </Box>
   );

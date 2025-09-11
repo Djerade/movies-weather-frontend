@@ -1,12 +1,12 @@
 "use client";
 
-import { useState } from "react";
-import { useFormik } from "formik";
-import { useRouter } from "next/navigation";
-import { Box, VStack, Field, Alert, Text, Link } from "@chakra-ui/react";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
-import { validationSchemas, formikConfig } from "@/lib/formik-config";
+import { formikConfig, validationSchemas } from "@/lib/formik-config";
+import { Box, Link, Text, VStack } from "@chakra-ui/react";
+import { useFormik } from "formik";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 interface SignupFormValues {
   name: string;
@@ -77,13 +77,19 @@ export function SignupForm() {
     return (
       <Box maxW="md" mx="auto" mt={8} p={6} borderWidth={1} borderRadius="lg">
         <VStack gap={4}>
-          <Alert.Root status="success">
-            <Alert.Indicator />
-            <Alert.Title>Account created successfully!</Alert.Title>
-            <Alert.Description>
+          <Box
+            p={4}
+            bg="green.50"
+            border="1px"
+            borderColor="green.200"
+            borderRadius="md"
+            color="green.800"
+          >
+            <Text fontWeight="bold">Account created successfully!</Text>
+            <Text fontSize="sm" mt={1}>
               You will be redirected to the login page shortly.
-            </Alert.Description>
-          </Alert.Root>
+            </Text>
+          </Box>
         </VStack>
       </Box>
     );
@@ -94,14 +100,22 @@ export function SignupForm() {
       <form onSubmit={formik.handleSubmit}>
         <VStack gap={4}>
           {error && (
-            <Alert.Root status="error">
-              <Alert.Indicator />
-              <Alert.Title>{error}</Alert.Title>
-            </Alert.Root>
+            <Box
+              p={3}
+              bg="red.50"
+              border="1px"
+              borderColor="red.200"
+              borderRadius="md"
+              color="red.800"
+            >
+              {error}
+            </Box>
           )}
 
-          <Field.Root invalid={!!(formik.errors.name && formik.touched.name)}>
-            <Field.Label>Full Name</Field.Label>
+          <Box>
+            <Text fontSize="sm" fontWeight="medium" mb={2}>
+              Full Name
+            </Text>
             <Input
               id="name"
               name="name"
@@ -110,12 +124,23 @@ export function SignupForm() {
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
               placeholder="Enter your full name"
+              borderColor={
+                formik.errors.name && formik.touched.name
+                  ? "red.500"
+                  : undefined
+              }
             />
-            <Field.ErrorText>{formik.errors.name}</Field.ErrorText>
-          </Field.Root>
+            {formik.errors.name && formik.touched.name && (
+              <Text color="red.500" fontSize="sm" mt={1}>
+                {formik.errors.name}
+              </Text>
+            )}
+          </Box>
 
-          <Field.Root invalid={!!(formik.errors.email && formik.touched.email)}>
-            <Field.Label>Email</Field.Label>
+          <Box>
+            <Text fontSize="sm" fontWeight="medium" mb={2}>
+              Email
+            </Text>
             <Input
               id="email"
               name="email"
@@ -124,14 +149,23 @@ export function SignupForm() {
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
               placeholder="Enter your email"
+              borderColor={
+                formik.errors.email && formik.touched.email
+                  ? "red.500"
+                  : undefined
+              }
             />
-            <Field.ErrorText>{formik.errors.email}</Field.ErrorText>
-          </Field.Root>
+            {formik.errors.email && formik.touched.email && (
+              <Text color="red.500" fontSize="sm" mt={1}>
+                {formik.errors.email}
+              </Text>
+            )}
+          </Box>
 
-          <Field.Root
-            invalid={!!(formik.errors.password && formik.touched.password)}
-          >
-            <Field.Label>Password</Field.Label>
+          <Box>
+            <Text fontSize="sm" fontWeight="medium" mb={2}>
+              Password
+            </Text>
             <Input
               id="password"
               name="password"
@@ -140,18 +174,23 @@ export function SignupForm() {
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
               placeholder="Enter your password"
+              borderColor={
+                formik.errors.password && formik.touched.password
+                  ? "red.500"
+                  : undefined
+              }
             />
-            <Field.ErrorText>{formik.errors.password}</Field.ErrorText>
-          </Field.Root>
+            {formik.errors.password && formik.touched.password && (
+              <Text color="red.500" fontSize="sm" mt={1}>
+                {formik.errors.password}
+              </Text>
+            )}
+          </Box>
 
-          <Field.Root
-            invalid={
-              !!(
-                formik.errors.confirmPassword && formik.touched.confirmPassword
-              )
-            }
-          >
-            <Field.Label>Confirm Password</Field.Label>
+          <Box>
+            <Text fontSize="sm" fontWeight="medium" mb={2}>
+              Confirm Password
+            </Text>
             <Input
               id="confirmPassword"
               name="confirmPassword"
@@ -160,18 +199,27 @@ export function SignupForm() {
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
               placeholder="Confirm your password"
+              borderColor={
+                formik.errors.confirmPassword && formik.touched.confirmPassword
+                  ? "red.500"
+                  : undefined
+              }
             />
-            <Field.ErrorText>{formik.errors.confirmPassword}</Field.ErrorText>
-          </Field.Root>
+            {formik.errors.confirmPassword &&
+              formik.touched.confirmPassword && (
+                <Text color="red.500" fontSize="sm" mt={1}>
+                  {formik.errors.confirmPassword}
+                </Text>
+              )}
+          </Box>
 
           <Button
             type="submit"
             colorScheme="blue"
             width="full"
-            loading={isLoading}
-            loadingText="Creating account..."
+            disabled={isLoading}
           >
-            Create Account
+            {isLoading ? "Creating account..." : "Create Account"}
           </Button>
 
           <Text fontSize="sm" textAlign="center">
