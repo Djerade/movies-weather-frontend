@@ -32,10 +32,16 @@ jobs:
       - name: Type check
         run: yarn type-check
 
-      - name: Lint code
+      - name: Lint code fix
+        run: yarn lint:fix
+
+      - name: Lint code check
         run: yarn lint
 
-      - name: Check formatting
+      - name: Check formatting 
+        run: yarn format
+
+      - name: Check formatting check
         run: yarn format:check
 
       - name: Build application

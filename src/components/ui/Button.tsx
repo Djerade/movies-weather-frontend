@@ -1,8 +1,8 @@
 "use client";
 
 import {
-    Button as ChakraButton,
-    ButtonProps as ChakraButtonProps,
+  Button as ChakraButton,
+  ButtonProps as ChakraButtonProps,
 } from "@chakra-ui/react";
 import { forwardRef } from "react";
 
