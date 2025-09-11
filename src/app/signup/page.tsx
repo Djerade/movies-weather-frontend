@@ -1,18 +1,17 @@
-'use client';
+"use client";
 
-import { Box, Container, Heading, Text, VStack } from '@chakra-ui/react';
-import { Layout } from '@/components/Layout';
-import { SignupForm } from '@/components/forms/SignupForm';
-import { useColorModeValue } from '@/lib/theme-context';
+import { Box, Container, Heading, Text, VStack } from "@chakra-ui/react";
+import { Layout } from "@/components/Layout";
+import { SignupForm } from "@/components/forms/SignupForm";
+import { useColorModeValue } from "@/lib/theme-context";
 
 export default function SignupPage() {
-  const textColor = useColorModeValue('gray.600', 'gray.300');
+  const textColor = useColorModeValue("gray.600", "gray.300");
 
   return (
     <Layout>
       <Container maxW="container.sm" py={8}>
         <VStack gap={6}>
- 
           <Box textAlign="center">
             <Heading size="lg" mb={2}>
               Create Your Account

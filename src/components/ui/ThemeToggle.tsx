@@ -1,29 +1,27 @@
-'use client';
+"use client";
 
-import { IconButton } from '@chakra-ui/react';
-import { SunIcon, MoonIcon } from '@chakra-ui/icons';
-import { useTheme } from '@/lib/use-theme';
+import { useTheme } from "@/lib/theme-context";
+import { MoonIcon, SunIcon } from "@chakra-ui/icons";
+import { IconButton } from "@chakra-ui/react";
 
 export const ThemeToggle = () => {
-  const { colorMode, setColorMode } = useTheme();
-  
-  const icon = colorMode === 'light' ? <MoonIcon /> : <SunIcon />;
-  const label = colorMode === 'light' ? 'Passer au mode sombre' : 'Passer au mode clair';
+  const { colorMode, toggleColorMode } = useTheme();
 
-  const toggleColorMode = () => {
-    setColorMode(colorMode === 'light' ? 'dark' : 'light');
-  };
+  const icon = colorMode === "light" ? <MoonIcon /> : <SunIcon />;
+  const label =
+    colorMode === "light" ? "Passer au mode sombre" : "Passer au mode clair";
 
   return (
     <IconButton
       aria-label={label}
-      icon={icon}
       onClick={toggleColorMode}
       variant="ghost"
       size="md"
       _hover={{
-        bg: colorMode === 'light' ? 'gray.100' : 'gray.700',
+        bg: colorMode === "light" ? "gray.100" : "gray.700",
       }}
-    />
+    >
+      {icon}
+    </IconButton>
   );
 };

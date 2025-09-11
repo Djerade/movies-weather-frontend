@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import { Box } from '@chakra-ui/react';
-import { Header } from './Header';
-import { useTheme } from '@/lib/use-theme';
+import { useTheme } from "@/lib/theme-context";
+import { Box } from "@chakra-ui/react";
+import { Header } from "./Header";
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -10,9 +10,9 @@ interface LayoutProps {
 
 export const Layout = ({ children }: LayoutProps) => {
   const { colorMode } = useTheme();
-  
-  const bg = colorMode === 'light' ? 'gray.50' : 'gray.900';
-  const color = colorMode === 'light' ? 'gray.800' : 'white';
+
+  const bg = colorMode === "light" ? "gray.50" : "gray.900";
+  const color = colorMode === "light" ? "gray.800" : "white";
 
   return (
     <Box minH="100vh" bg={bg} color={color}>

@@ -1,24 +1,24 @@
-'use client';
+"use client";
 
-import { ApolloClient, InMemoryCache, createHttpLink } from '@apollo/client';
-import { ApolloProvider } from '@apollo/client/react';
-import { setContext } from '@apollo/client/link/context';
+import { ApolloClient, InMemoryCache, createHttpLink } from "@apollo/client";
+import { ApolloProvider } from "@apollo/client/react";
+import { setContext } from "@apollo/client/link/context";
 
 const httpLink = createHttpLink({
   uri:
-    process.env.NEXT_PUBLIC_GRAPHQL_ENDPOINT || 'http://localhost:4000/graphql',
+    process.env.NEXT_PUBLIC_GRAPHQL_ENDPOINT || "http://localhost:4000/graphql",
 });
 
 const authLink = setContext((_, { headers }) => {
   // Get the authentication token from local storage if it exists
   const token =
-    typeof window !== 'undefined' ? localStorage.getItem('token') : null;
+    typeof window !== "undefined" ? localStorage.getItem("token") : null;
 
   // Return the headers to the context so httpLink can read them
   return {
     headers: {
       ...headers,
-      authorization: token ? `Bearer ${token}` : '',
+      authorization: token ? `Bearer ${token}` : "",
     },
   };
 });
@@ -28,10 +28,10 @@ const client = new ApolloClient({
   cache: new InMemoryCache(),
   defaultOptions: {
     watchQuery: {
-      errorPolicy: 'all',
+      errorPolicy: "all",
     },
     query: {
-      errorPolicy: 'all',
+      errorPolicy: "all",
     },
   },
 });

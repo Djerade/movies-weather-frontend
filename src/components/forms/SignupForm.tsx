@@ -1,12 +1,12 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { useFormik } from 'formik';
-import { useRouter } from 'next/navigation';
-import { Box, VStack, Field, Alert, Text, Link } from '@chakra-ui/react';
-import { Button } from '@/components/ui/Button';
-import { Input } from '@/components/ui/Input';
-import { validationSchemas, formikConfig } from '@/lib/formik-config';
+import { useState } from "react";
+import { useFormik } from "formik";
+import { useRouter } from "next/navigation";
+import { Box, VStack, Field, Alert, Text, Link } from "@chakra-ui/react";
+import { Button } from "@/components/ui/Button";
+import { Input } from "@/components/ui/Input";
+import { validationSchemas, formikConfig } from "@/lib/formik-config";
 
 interface SignupFormValues {
   name: string;
@@ -24,10 +24,10 @@ export function SignupForm() {
   const formik = useFormik<SignupFormValues>({
     ...formikConfig,
     initialValues: {
-      name: '',
-      email: '',
-      password: '',
-      confirmPassword: '',
+      name: "",
+      email: "",
+      password: "",
+      confirmPassword: "",
     },
     validationSchema: validationSchemas.name
       .concat(validationSchemas.email)
@@ -39,10 +39,10 @@ export function SignupForm() {
 
       try {
         // TODO: Replace with actual signup API call
-        const response = await fetch('/api/auth/signup', {
-          method: 'POST',
+        const response = await fetch("/api/auth/signup", {
+          method: "POST",
           headers: {
-            'Content-Type': 'application/json',
+            "Content-Type": "application/json",
           },
           body: JSON.stringify({
             name: values.name,
@@ -53,16 +53,20 @@ export function SignupForm() {
 
         if (!response.ok) {
           const errorData = await response.json();
-          throw new Error(errorData.message || 'Signup failed');
+          throw new Error(errorData.message || "Signup failed");
         }
 
         setSuccess(true);
         // Redirect to login page after successful signup
         setTimeout(() => {
-          router.push('/login');
+          router.push("/login");
         }, 2000);
       } catch (err) {
-        setError(err instanceof Error ? err.message : 'An error occurred. Please try again.');
+        setError(
+          err instanceof Error
+            ? err.message
+            : "An error occurred. Please try again."
+        );
       } finally {
         setIsLoading(false);
       }
@@ -141,7 +145,11 @@ export function SignupForm() {
           </Field.Root>
 
           <Field.Root
-            invalid={!!(formik.errors.confirmPassword && formik.touched.confirmPassword)}
+            invalid={
+              !!(
+                formik.errors.confirmPassword && formik.touched.confirmPassword
+              )
+            }
           >
             <Field.Label>Confirm Password</Field.Label>
             <Input
@@ -167,7 +175,7 @@ export function SignupForm() {
           </Button>
 
           <Text fontSize="sm" textAlign="center">
-            Already have an account?{' '}
+            Already have an account?{" "}
             <Link href="/login" color="blue.500" textDecoration="underline">
               Sign in
             </Link>
