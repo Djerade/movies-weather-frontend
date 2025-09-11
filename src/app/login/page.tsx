@@ -1,4 +1,4 @@
-export default function HomePage() {
+export default function LoginPage() {
   return (
     <div style={{ padding: "2rem", maxWidth: "400px", margin: "0 auto" }}>
       <div style={{ textAlign: "center", marginBottom: "2rem" }}>
