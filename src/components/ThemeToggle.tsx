@@ -1,7 +1,7 @@
 "use client";
 
-import { IconButton } from "@chakra-ui/react";
 import { useTheme } from "@/lib/theme-context";
+import { IconButton } from "@chakra-ui/react";
 
 // Icônes SVG intégrées
 const SunIcon = () => (
