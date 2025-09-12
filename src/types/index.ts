@@ -17,24 +17,46 @@ export interface User {
 }
 
 export interface Movie {
-  id: string;
   title: string;
-  description: string;
-  releaseDate: string;
-  rating: number;
-  genre: string[];
-  posterUrl?: string;
-  backdropUrl?: string;
+  year: string;
+  imdbID: string;
+  type: string;
+  poster: string;
+  plot?: string;
+  imdbRating?: string;
+  genre?: string;
+  director?: string;
+  actors?: string;
+}
+
+export interface MovieSearchResult {
+  title: string;
+  year: string;
+  imdbID: string;
+  type: string;
+  poster: string;
+}
+
+export interface MovieSearchResponse {
+  search: MovieSearchResult[];
+  totalResults: string;
 }
 
 export interface WeatherData {
-  id: string;
-  location: string;
+  city: string;
+  country: string;
   temperature: number;
+  feelsLike: number;
   description: string;
   humidity: number;
+  pressure: number;
   windSpeed: number;
-  timestamp: string;
+  windDirection: number;
+  visibility: number;
+  uvIndex: number;
+  sunrise: string;
+  sunset: string;
+  icon: string;
 }
 
 export interface ApiResponse<T> {

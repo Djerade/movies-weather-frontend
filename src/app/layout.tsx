@@ -1,6 +1,7 @@
+import Navigation from "@/components/Navigation";
+import { ApolloWrapper } from "@/lib/apollo-wrapper";
 import type { Metadata } from "next";
 import "./globals.css";
-import { ApolloWrapper } from "@/lib/apollo-wrapper";
 
 export const metadata: Metadata = {
   title: "Movies & Weather App",
@@ -15,7 +16,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <ApolloWrapper>{children}</ApolloWrapper>
+        <ApolloWrapper>
+          <Navigation />
+          {children}
+        </ApolloWrapper>
       </body>
     </html>
   );
