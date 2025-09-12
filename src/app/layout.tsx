@@ -1,4 +1,3 @@
-import Navigation from "@/components/Navigation";
 import { ApolloWrapper } from "@/lib/apollo-wrapper";
 import type { Metadata } from "next";
 import "./globals.css";
@@ -17,7 +16,6 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <ApolloWrapper>
-          <Navigation />
           {children}
         </ApolloWrapper>
       </body>
