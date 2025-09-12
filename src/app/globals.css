@@ -38,3 +38,19 @@ body {
     background-color 0.2s ease,
     color 0.2s ease;
 }
+
+/* Animations pour les spinners */
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Amélioration de la visibilité des champs de saisie */
+input::placeholder {
+  color: #a0aec0 !important;
+  opacity: 1;
+}
+
+input:focus::placeholder {
+  color: #cbd5e0 !important;
+}
