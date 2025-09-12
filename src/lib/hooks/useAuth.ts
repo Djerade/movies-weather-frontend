@@ -28,6 +28,8 @@ export function useAuth() {
           id: string;
           email: string;
           name: string;
+          city: string;
+          token: string;
         };
       }>({
         mutation: LOGIN_MUTATION,
@@ -35,8 +37,8 @@ export function useAuth() {
       });
 
       if (data?.login) {
-        // Générer un token simulé (en attendant que le backend retourne un vrai token)
-        const token = `token_${data.login.id}_${Date.now()}`;
+        // Utiliser le token retourné par le backend
+        const token = data.login.token;
 
         // Stocker le token et l'utilisateur dans localStorage
         localStorage.setItem("token", token);
@@ -73,6 +75,8 @@ export function useAuth() {
           id: string;
           email: string;
           name: string;
+          city: string;
+          token: string;
         };
       }>({
         mutation: SIGNUP_MUTATION,
@@ -80,8 +84,8 @@ export function useAuth() {
       });
 
       if (data?.signup) {
-        // Générer un token simulé (en attendant que le backend retourne un vrai token)
-        const token = `token_${data.signup.id}_${Date.now()}`;
+        // Utiliser le token retourné par le backend
+        const token = data.signup.token;
 
         // Stocker le token et l'utilisateur dans localStorage
         localStorage.setItem("token", token);

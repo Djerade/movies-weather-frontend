@@ -6,6 +6,8 @@ export const LOGIN_MUTATION = gql`
       id
       email
       name
+      city
+      token
     }
   }
 `;
@@ -21,6 +23,8 @@ export const SIGNUP_MUTATION = gql`
       id
       email
       name
+      city
+      token
     }
   }
 `;
@@ -31,6 +35,7 @@ export const GET_USER_QUERY = gql`
       id
       email
       name
+      city
     }
   }
 `;
@@ -87,8 +92,8 @@ export const GET_FAVORITES_QUERY = gql`
 `;
 
 export const GET_WEATHER_QUERY = gql`
-  query GetWeather {
-    weather {
+  query GetWeather($city: String) {
+    weather(city: $city) {
       city
       country
       temperature

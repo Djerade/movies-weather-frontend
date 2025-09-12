@@ -12,6 +12,7 @@ export interface User {
   id: string;
   email: string;
   name: string;
+  city: string;
   createdAt: string;
   updatedAt: string;
 }

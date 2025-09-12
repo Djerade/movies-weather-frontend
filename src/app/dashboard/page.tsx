@@ -16,9 +16,19 @@ export default function DashboardPage() {
     id: string;
     name: string;
     email: string;
+    city: string;
   } | null>(null);
 
-  const { data: weatherData, loading: weatherLoading, error: weatherError } = useQuery(GET_WEATHER_QUERY);
+  const { data: weatherData, loading: weatherLoading, error: weatherError, refetch: refetchWeather } = useQuery(GET_WEATHER_QUERY, {
+    variables: { city: user?.city },
+    skip: !user?.city,
+    errorPolicy: 'all',
+    onError: (error: any) => {
+      console.error('Weather API Error:', error);
+      console.error('GraphQL Errors:', error.graphQLErrors);
+      console.error('Network Error:', error.networkError);
+    }
+  });
   const { data: favoritesData, loading: favoritesLoading, error: favoritesError, refetch: refetchFavorites } = useQuery(GET_FAVORITES_QUERY, {
     variables: { userId: user?.id },
     skip: !user?.id,
@@ -74,8 +84,8 @@ export default function DashboardPage() {
         }}>
           <h1 style={{ fontSize: "1.8rem", marginBottom: "1rem", color: "#2d3748" }}>Accès non autorisé</h1>
           <p style={{ color: "#718096", marginBottom: "2rem" }}>Vous devez être connecté pour accéder à cette page.</p>
-          <a
-            href="/login"
+        <a
+          href="/login"
             style={{ 
               display: "inline-block",
               background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
@@ -88,9 +98,9 @@ export default function DashboardPage() {
             }}
             onMouseOver={(e) => e.currentTarget.style.transform = "translateY(-2px)"}
             onMouseOut={(e) => e.currentTarget.style.transform = "translateY(0)"}
-          >
-            Se connecter
-          </a>
+        >
+          Se connecter
+        </a>
         </div>
       </div>
     );
@@ -213,7 +223,28 @@ export default function DashboardPage() {
                   borderRadius: "12px", 
                   textAlign: "center"
                 }}>
-                  ⚠️ Erreur de chargement
+                  <div style={{ fontSize: "1.5rem", marginBottom: "0.5rem" }}>⚠️</div>
+                  <div style={{ fontWeight: "600", marginBottom: "0.5rem" }}>
+                    Service météo temporairement indisponible
+                  </div>
+                  <p style={{ fontSize: "0.9rem", margin: "0", opacity: "0.8" }}>
+                    Le service météo est en cours de maintenance. Réessayez plus tard.
+                  </p>
+                </div>
+              )}
+              
+              {!user?.city && !weatherLoading && !weatherError && (
+                <div style={{ 
+                  background: "#fef5e7", 
+                  color: "#744210", 
+                  padding: "1rem", 
+                  borderRadius: "12px", 
+                  textAlign: "center"
+                }}>
+                  📍 Aucune ville configurée
+                  <p style={{ fontSize: "0.9rem", margin: "0.5rem 0 0 0", opacity: "0.8" }}>
+                    Configurez votre ville dans votre profil pour voir la météo
+                  </p>
                 </div>
               )}
               
@@ -221,7 +252,7 @@ export default function DashboardPage() {
                 <div>
                   <div style={{ textAlign: "center", marginBottom: "1.5rem" }}>
                     <h4 style={{ fontSize: "1.1rem", fontWeight: "600", margin: "0 0 0.5rem 0", color: "#2d3748" }}>
-                      {(weatherData as any).weather.city}, {(weatherData as any).weather.country}
+                      {user?.city || (weatherData as any).weather.city}, {(weatherData as any).weather.country}
                     </h4>
                     <div style={{ fontSize: "3rem", fontWeight: "700", color: "#667eea", marginBottom: "0.5rem" }}>
                       {(weatherData as any).weather.temperature}°
@@ -305,13 +336,13 @@ export default function DashboardPage() {
                 </p>
                 <a
                   href="/movies"
-                  style={{ 
+          style={{
                     display: "inline-block",
                     marginTop: "1rem",
                     background: "linear-gradient(135deg, #fd79a8 0%, #e84393 100%)",
                     color: "white",
                     padding: "0.5rem 1rem",
-                    borderRadius: "8px",
+            borderRadius: "8px",
                     textDecoration: "none",
                     fontSize: "0.9rem",
                     fontWeight: "600",
@@ -377,10 +408,10 @@ export default function DashboardPage() {
                     <p style={{ color: "#718096", fontSize: "0.9rem", margin: "0 0 0.25rem 0" }}>ID</p>
                     <p style={{ fontWeight: "600", margin: "0", color: "#2d3748", fontSize: "0.8rem", wordBreak: "break-all" }}>{user.id}</p>
                   </div>
-                </div>
-              ) : (
+            </div>
+          ) : (
                 <p style={{ color: "#718096", textAlign: "center" }}>Chargement...</p>
-              )}
+          )}
             </div>
           </div>
         </div>
@@ -486,7 +517,7 @@ export default function DashboardPage() {
                       />
                       <button
                         onClick={() => handleRemoveFromFavorites(movie.imdbID, movie.title)}
-                        style={{
+          style={{
                           position: "absolute",
                           top: "1rem",
                           right: "1rem",
