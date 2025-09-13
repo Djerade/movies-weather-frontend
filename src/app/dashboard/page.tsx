@@ -27,11 +27,6 @@ export default function DashboardPage() {
     variables: { city: user?.city },
     skip: !user?.city,
     errorPolicy: "all",
-    onError: (error: any) => {
-      console.error("Weather API Error:", error);
-      console.error("GraphQL Errors:", error.graphQLErrors);
-      console.error("Network Error:", error.networkError);
-    },
   });
   const {
     data: favoritesData,
