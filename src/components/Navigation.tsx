@@ -24,22 +24,48 @@ export default function Navigation() {
   }
 
   return (
-    <div style={{ backgroundColor: "#3182ce", color: "white", padding: "0.5rem 1rem" }}>
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", maxWidth: "1200px", margin: "0 auto" }}>
+    <div
+      style={{
+        backgroundColor: "#3182ce",
+        color: "white",
+        padding: "0.5rem 1rem",
+      }}
+    >
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          maxWidth: "1200px",
+          margin: "0 auto",
+        }}
+      >
         <div style={{ display: "flex", gap: "1.5rem" }}>
           <a
             href="/dashboard"
-            style={{ color: "white", textDecoration: "none", fontWeight: "bold" }}
-            onMouseOver={(e) => e.currentTarget.style.textDecoration = "underline"}
-            onMouseOut={(e) => e.currentTarget.style.textDecoration = "none"}
+            style={{
+              color: "white",
+              textDecoration: "none",
+              fontWeight: "bold",
+            }}
+            onMouseOver={e =>
+              (e.currentTarget.style.textDecoration = "underline")
+            }
+            onMouseOut={e => (e.currentTarget.style.textDecoration = "none")}
           >
             Dashboard
           </a>
           <a
             href="/movies"
-            style={{ color: "white", textDecoration: "none", fontWeight: "bold" }}
-            onMouseOver={(e) => e.currentTarget.style.textDecoration = "underline"}
-            onMouseOut={(e) => e.currentTarget.style.textDecoration = "none"}
+            style={{
+              color: "white",
+              textDecoration: "none",
+              fontWeight: "bold",
+            }}
+            onMouseOver={e =>
+              (e.currentTarget.style.textDecoration = "underline")
+            }
+            onMouseOut={e => (e.currentTarget.style.textDecoration = "none")}
           >
             Films
           </a>
@@ -53,7 +79,7 @@ export default function Navigation() {
             border: "1px solid white",
             borderRadius: "4px",
             cursor: "pointer",
-            fontSize: "0.9rem"
+            fontSize: "0.9rem",
           }}
         >
           Déconnexion
