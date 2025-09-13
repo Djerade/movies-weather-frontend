@@ -1,16 +1,42 @@
 "use client";
 
-import { useAuth } from "@/lib/hooks/useAuth";
+import { getSession, signIn } from "next-auth/react";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { login, isLoading, error } = useAuth();
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    await login(email, password);
+    setIsLoading(true);
+    setError(null);
+
+    try {
+      const result = await signIn("credentials", {
+        email,
+        password,
+        redirect: false,
+      });
+
+      if (result?.error) {
+        setError("Email ou mot de passe incorrect");
+      } else if (result?.ok) {
+        // Vérifier la session
+        const session = await getSession();
+        if (session) {
+          router.push("/dashboard");
+        }
+      }
+    } catch (err) {
+      setError("Erreur de connexion");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (

@@ -14,34 +14,55 @@ export const authOptions: NextAuthOptions = {
           return null;
         }
 
-        // Here you would typically make an API call to your backend
-        // to verify the credentials and get user data
+        // Appel GraphQL pour l'authentification
         try {
           const response = await fetch(
-            `${process.env.NEXT_PUBLIC_API_URL}/auth/login`,
+            process.env.NEXT_PUBLIC_GRAPHQL_ENDPOINT || "http://localhost:4000/graphql",
             {
               method: "POST",
               headers: {
                 "Content-Type": "application/json",
               },
               body: JSON.stringify({
-                email: credentials.email,
-                password: credentials.password,
+                query: `
+                  mutation Login($email: String!, $password: String!) {
+                    login(email: $email, password: $password) {
+                      id
+                      email
+                      name
+                      city
+                      token
+                    }
+                  }
+                `,
+                variables: {
+                  email: credentials.email,
+                  password: credentials.password,
+                },
               }),
             }
           );
 
           if (!response.ok) {
+            console.error("GraphQL request failed:", response.status);
             return null;
           }
 
-          const user = await response.json();
+          const result = await response.json();
+
+          if (result.errors) {
+            console.error("GraphQL errors:", result.errors);
+            return null;
+          }
+
+          const user = result.data?.login;
 
           if (user) {
             return {
               id: user.id,
               email: user.email,
               name: user.name,
+              city: user.city,
             };
           }
         } catch (error) {
@@ -70,6 +91,6 @@ export const authOptions: NextAuthOptions = {
     },
   },
   pages: {
-    signIn: "/auth/signin",
+    signIn: "/login",
   },
 };

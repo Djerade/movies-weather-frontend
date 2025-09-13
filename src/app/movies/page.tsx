@@ -1,19 +1,18 @@
 "use client";
 
-import {
-  ADD_TO_FAVORITES_MUTATION,
-  SEARCH_MOVIES_QUERY,
-} from "@/lib/graphql/mutations";
-import { useAuth } from "@/lib/hooks/useAuth";
+import { handleGraphQLError, showErrorToast, showSuccessToast } from "@/lib/error-handler";
+import { ADD_TO_FAVORITES_MUTATION, SEARCH_MOVIES_QUERY } from "@/lib/graphql";
 import { MovieSearchResult } from "@/types";
 import { useMutation, useQuery } from "@apollo/client/react";
+import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
+// import MovieCard from "@/components/MovieCard";
 
 export default function MoviesPage() {
   const [searchQuery, setSearchQuery] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
   const [mounted, setMounted] = useState(false);
-  const { isAuthenticated, getCurrentUser } = useAuth();
+  const { data: session } = useSession();
 
   useEffect(() => {
     setMounted(true);
@@ -48,23 +47,28 @@ export default function MoviesPage() {
   };
 
   const handleAddToFavorites = async (movie: MovieSearchResult) => {
-    if (!isAuthenticated()) {
-      alert("Vous devez être connecté pour ajouter des favoris");
+    if (!session) {
+      showErrorToast("Vous devez être connecté pour ajouter des favoris");
       return;
     }
 
-    const user = getCurrentUser();
-    if (!user?.id) {
-      alert("Erreur: Impossible de récupérer l'ID utilisateur");
+    if (!session.user?.id) {
+      showErrorToast("Erreur: Impossible de récupérer l'ID utilisateur");
       return;
     }
 
     try {
-      await addToFavorites({
-        variables: { userId: user.id, imdbId: movie.imdbID },
+      const result = await addToFavorites({
+        variables: { userId: session.user.id, imdbId: movie.imdbID },
       });
+      
+      if (result.data?.addFavoriteMovie) {
+        showSuccessToast(`${movie.title} ajouté à vos favoris !`);
+      }
     } catch (error) {
       console.error("Error adding to favorites:", error);
+      const errorMessage = handleGraphQLError(error);
+      showErrorToast(errorMessage);
     }
   };
 
@@ -108,7 +112,7 @@ export default function MoviesPage() {
     );
   }
 
-  if (!isAuthenticated()) {
+  if (!session) {
     return (
       <div
         style={{

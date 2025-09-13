@@ -1,6 +1,6 @@
 "use client";
 
-import { LOGIN_MUTATION, SIGNUP_MUTATION } from "@/lib/graphql/mutations";
+import { LOGIN_MUTATION, SIGNUP_MUTATION } from "@/lib/graphql";
 import { ApolloClient, InMemoryCache, createHttpLink } from "@apollo/client";
 import { useRouter } from "next/navigation";
 import { useState } from "react";

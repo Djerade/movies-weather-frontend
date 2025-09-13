@@ -1,5 +1,6 @@
 import { gql } from "@apollo/client";
 
+// Auth mutations
 export const LOGIN_MUTATION = gql`
   mutation Login($email: String!, $password: String!) {
     login(email: $email, password: $password) {
@@ -29,9 +30,10 @@ export const SIGNUP_MUTATION = gql`
   }
 `;
 
+// User queries
 export const GET_USER_QUERY = gql`
   query GetUser {
-    me {
+    getUser {
       id
       email
       name
@@ -40,6 +42,7 @@ export const GET_USER_QUERY = gql`
   }
 `;
 
+// Movie queries and mutations
 export const SEARCH_MOVIES_QUERY = gql`
   query SearchMovies($query: String!) {
     searchMovies(query: $query) {
@@ -91,6 +94,7 @@ export const GET_FAVORITES_QUERY = gql`
   }
 `;
 
+// Weather queries
 export const GET_WEATHER_QUERY = gql`
   query GetWeather($city: String) {
     weather(city: $city) {

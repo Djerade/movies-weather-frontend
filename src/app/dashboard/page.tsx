@@ -4,14 +4,16 @@ import {
   GET_FAVORITES_QUERY,
   GET_WEATHER_QUERY,
   REMOVE_FROM_FAVORITES_MUTATION,
-} from "@/lib/graphql/mutations";
-import { useAuth } from "@/lib/hooks/useAuth";
+} from "@/lib/graphql";
 import { Movie } from "@/types";
 import { useMutation, useQuery } from "@apollo/client/react";
+import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
+// import WeatherCard from "@/components/WeatherCard";
+// import FavoritesList from "@/components/FavoritesList";
 
 export default function DashboardPage() {
-  const { getCurrentUser, isAuthenticated } = useAuth();
+  const { data: session } = useSession();
   const [user, setUser] = useState<{
     id: string;
     name: string;
@@ -48,9 +50,15 @@ export default function DashboardPage() {
   });
 
   useEffect(() => {
-    const currentUser = getCurrentUser();
-    setUser(currentUser);
-  }, [getCurrentUser]);
+    if (session?.user) {
+      setUser({
+        id: session.user.id || "",
+        name: session.user.name || "",
+        email: session.user.email || "",
+        city: "Paris", // Default city, should come from user data
+      });
+    }
+  }, [session]);
 
   const handleRemoveFromFavorites = async (imdbId: string, title: string) => {
     if (!user?.id) {
@@ -72,7 +80,7 @@ export default function DashboardPage() {
     }
   };
 
-  if (!isAuthenticated()) {
+  if (!session) {
     return (
       <div
         style={{

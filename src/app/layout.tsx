@@ -1,4 +1,4 @@
-import { ApolloWrapper } from "@/lib/apollo-wrapper";
+import Providers from "@/components/Providers";
 import type { Metadata } from "next";
 import "./globals.css";
 
@@ -13,9 +13,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="fr">
       <body>
-        <ApolloWrapper>{children}</ApolloWrapper>
+        <Providers>
+          {children}
+        </Providers>
       </body>
     </html>
   );
