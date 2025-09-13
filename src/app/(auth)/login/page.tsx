@@ -32,7 +32,7 @@ export default function LoginPage() {
           router.push("/dashboard");
         }
       }
-    } catch (err) {
+    } catch {
       setError("Erreur de connexion");
     } finally {
       setIsLoading(false);

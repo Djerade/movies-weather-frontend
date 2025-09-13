@@ -17,7 +17,8 @@ export const authOptions: NextAuthOptions = {
         // Appel GraphQL pour l'authentification
         try {
           const response = await fetch(
-            process.env.NEXT_PUBLIC_GRAPHQL_ENDPOINT || "http://localhost:4000/graphql",
+            process.env.NEXT_PUBLIC_GRAPHQL_ENDPOINT ||
+              "http://localhost:4000/graphql",
             {
               method: "POST",
               headers: {

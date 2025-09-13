@@ -5,11 +5,7 @@ import { ApolloProvider } from "@apollo/client/react";
 import { SessionProvider } from "next-auth/react";
 import ClientNavbar from "./ClientNavbar";
 
-export default function Providers({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function Providers({ children }: { children: React.ReactNode }) {
   return (
     <SessionProvider>
       <ApolloProvider client={client}>

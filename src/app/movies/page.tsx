@@ -1,6 +1,10 @@
 "use client";
 
-import { handleGraphQLError, showErrorToast, showSuccessToast } from "@/lib/error-handler";
+import {
+  handleGraphQLError,
+  showErrorToast,
+  showSuccessToast,
+} from "@/lib/error-handler";
 import { ADD_TO_FAVORITES_MUTATION, SEARCH_MOVIES_QUERY } from "@/lib/graphql";
 import { MovieSearchResult } from "@/types";
 import { useMutation, useQuery } from "@apollo/client/react";
@@ -61,8 +65,8 @@ export default function MoviesPage() {
       const result = await addToFavorites({
         variables: { userId: session.user.id, imdbId: movie.imdbID },
       });
-      
-      if (result.data?.addFavoriteMovie) {
+
+      if (result.data) {
         showSuccessToast(`${movie.title} ajouté à vos favoris !`);
       }
     } catch (error) {

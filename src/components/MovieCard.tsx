@@ -2,13 +2,13 @@
 
 import { StarIcon } from "@chakra-ui/icons";
 import {
-    Badge,
-    Box,
-    Button,
-    HStack,
-    Image,
-    Text,
-    VStack,
+  Badge,
+  Box,
+  Button,
+  HStack,
+  Image,
+  Text,
+  VStack,
 } from "@chakra-ui/react";
 
 interface Movie {
