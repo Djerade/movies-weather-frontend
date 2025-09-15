@@ -55,7 +55,7 @@ export default function DashboardPage() {
         id: session.user.id || "",
         name: session.user.name || "",
         email: session.user.email || "",
-        city: "Paris", // Default city, should come from user data
+        city: session.user.city || "", 
       });
     }
   }, [session]);
@@ -327,7 +327,7 @@ export default function DashboardPage() {
                     textAlign: "center",
                   }}
                 >
-                  📍 Aucune ville configurée
+                   Aucune ville configurée
                   <p
                     style={{
                       fontSize: "0.9rem",
@@ -390,7 +390,7 @@ export default function DashboardPage() {
                       }}
                     >
                       <span style={{ color: "#718096" }}>Ressenti:</span>
-                      <span style={{ fontWeight: "600" }}>
+                      <span style={{ fontWeight: "600" , color: "#2d3748" }}>
                         {(weatherData as any).weather.feelsLike}°
                       </span>
                     </div>
@@ -401,7 +401,7 @@ export default function DashboardPage() {
                       }}
                     >
                       <span style={{ color: "#718096" }}>Humidité:</span>
-                      <span style={{ fontWeight: "600" }}>
+                      <span style={{ fontWeight: "600" , color: "#2d3748" }}>
                         {(weatherData as any).weather.humidity}%
                       </span>
                     </div>
@@ -412,7 +412,7 @@ export default function DashboardPage() {
                       }}
                     >
                       <span style={{ color: "#718096" }}>Vent:</span>
-                      <span style={{ fontWeight: "600" }}>
+                      <span style={{ fontWeight: "600" , color: "#2d3748" }}>
                         {(weatherData as any).weather.windSpeed} km/h
                       </span>
                     </div>
@@ -423,7 +423,7 @@ export default function DashboardPage() {
                       }}
                     >
                       <span style={{ color: "#718096" }}>UV Index:</span>
-                      <span style={{ fontWeight: "600" }}>
+                      <span style={{ fontWeight: "600" , color: "#2d3748" }}>
                         {(weatherData as any).weather.uvIndex}
                       </span>
                     </div>
@@ -534,138 +534,6 @@ export default function DashboardPage() {
             </div>
           </div>
 
-          {/* User Info Card */}
-          <div
-            style={{
-              background: "white",
-              borderRadius: "20px",
-              padding: "2rem",
-              boxShadow: "0 10px 30px rgba(0,0,0,0.1)",
-              border: "1px solid rgba(255,255,255,0.2)",
-              position: "relative",
-              overflow: "hidden",
-            }}
-          >
-            <div
-              style={{
-                position: "absolute",
-                top: "-20px",
-                right: "-20px",
-                width: "100px",
-                height: "100px",
-                background: "linear-gradient(135deg, #00b894 0%, #00a085 100%)",
-                borderRadius: "50%",
-                opacity: "0.1",
-              }}
-            ></div>
-            <div style={{ position: "relative", zIndex: "1" }}>
-              <div
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  marginBottom: "1rem",
-                }}
-              >
-                <div
-                  style={{
-                    background:
-                      "linear-gradient(135deg, #00b894 0%, #00a085 100%)",
-                    width: "40px",
-                    height: "40px",
-                    borderRadius: "12px",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    marginRight: "1rem",
-                  }}
-                >
-                  <span style={{ fontSize: "1.2rem" }}>👤</span>
-                </div>
-                <h3
-                  style={{
-                    fontSize: "1.2rem",
-                    fontWeight: "600",
-                    margin: "0",
-                    color: "#2d3748",
-                  }}
-                >
-                  Profil
-                </h3>
-              </div>
-
-              {user ? (
-                <div>
-                  <div style={{ marginBottom: "1rem" }}>
-                    <p
-                      style={{
-                        color: "#718096",
-                        fontSize: "0.9rem",
-                        margin: "0 0 0.25rem 0",
-                      }}
-                    >
-                      Nom
-                    </p>
-                    <p
-                      style={{
-                        fontWeight: "600",
-                        margin: "0",
-                        color: "#2d3748",
-                      }}
-                    >
-                      {user.name}
-                    </p>
-                  </div>
-                  <div style={{ marginBottom: "1rem" }}>
-                    <p
-                      style={{
-                        color: "#718096",
-                        fontSize: "0.9rem",
-                        margin: "0 0 0.25rem 0",
-                      }}
-                    >
-                      Email
-                    </p>
-                    <p
-                      style={{
-                        fontWeight: "600",
-                        margin: "0",
-                        color: "#2d3748",
-                        fontSize: "0.9rem",
-                      }}
-                    >
-                      {user.email}
-                    </p>
-                  </div>
-                  <div>
-                    <p
-                      style={{
-                        color: "#718096",
-                        fontSize: "0.9rem",
-                        margin: "0 0 0.25rem 0",
-                      }}
-                    >
-                      ID
-                    </p>
-                    <p
-                      style={{
-                        fontWeight: "600",
-                        margin: "0",
-                        color: "#2d3748",
-                        fontSize: "0.8rem",
-                        wordBreak: "break-all",
-                      }}
-                    >
-                      {user.id}
-                    </p>
-                  </div>
-                </div>
-              ) : (
-                <p style={{ color: "#718096", textAlign: "center" }}>
-                  Chargement...
-                </p>
-              )}
-            </div>
-          </div>
         </div>
 
         {/* Favorites Section */}

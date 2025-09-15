@@ -32,7 +32,7 @@ export default function MoviesPage() {
 
   const [addToFavorites] = useMutation(ADD_TO_FAVORITES_MUTATION, {
     onCompleted: () => {
-      // Film ajouté avec succès
+      console.log("Film ajouté avec succès");
     },
     onError: (error: any) => {
       console.error("Error adding to favorites:", error);
@@ -62,7 +62,7 @@ export default function MoviesPage() {
         variables: { userId: session.user.id, imdbId: movie.imdbID },
       });
       
-      if (result.data?.addFavoriteMovie) {
+      if (result.data) {
         showSuccessToast(`${movie.title} ajouté à vos favoris !`);
       }
     } catch (error) {

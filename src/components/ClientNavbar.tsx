@@ -58,19 +58,36 @@ export default function ClientNavbar() {
         {status === "loading" ? (
           <span>Chargement...</span>
         ) : session ? (
-          <div style={{ display: "flex", gap: "0.5rem", alignItems: "center" }}>
-            <span style={{ fontSize: "0.875rem", fontWeight: "bold" }}>
-              {session.user?.name}
-            </span>
+          <div style={{ display: "flex", gap: "1rem", alignItems: "center" }}>
+              <span
+                style={{
+                  fontSize: "1rem",
+                  fontWeight: "600",
+                  color: "#2d3748",
+                }}
+              >
+                {session.user?.name}
+              </span>
             <button
               onClick={handleSignOut}
               style={{
-                padding: "0.25rem 0.5rem",
+                padding: "0.5rem 1rem",
                 fontSize: "0.875rem",
                 backgroundColor: "transparent",
-                border: "1px solid #e2e8f0",
-                borderRadius: "0.25rem",
+                border: "1px solid #e53e3e",
+                borderRadius: "0.375rem",
                 cursor: "pointer",
+                color: "#e53e3e",
+                fontWeight: "500",
+                transition: "all 0.2s ease",
+              }}
+              onMouseOver={(e) => {
+                e.currentTarget.style.backgroundColor = "#e53e3e";
+                e.currentTarget.style.color = "white";
+              }}
+              onMouseOut={(e) => {
+                e.currentTarget.style.backgroundColor = "transparent";
+                e.currentTarget.style.color = "#e53e3e";
               }}
             >
               Se déconnecter
