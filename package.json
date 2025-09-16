@@ -18,6 +18,7 @@
     "@chakra-ui/react": "^3.26.0",
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.1",
+    "auth0-js": "^9.28.0",
     "formik": "^2.4.6",
     "framer-motion": "^12.23.12",
     "graphql": "^16.11.0",
