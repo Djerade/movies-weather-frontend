@@ -5,15 +5,15 @@ import {
   GET_WEATHER_QUERY,
   REMOVE_FROM_FAVORITES_MUTATION,
 } from "@/lib/graphql";
+import { useUnifiedAuth } from "@/lib/hooks/useUnifiedAuth";
 import { Movie } from "@/types";
 import { useMutation, useQuery } from "@apollo/client/react";
-import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 // import WeatherCard from "@/components/WeatherCard";
 // import FavoritesList from "@/components/FavoritesList";
 
 export default function DashboardPage() {
-  const { data: session } = useSession();
+  const { user: authUser } = useUnifiedAuth();
   const [user, setUser] = useState<{
     id: string;
     name: string;
@@ -50,15 +50,15 @@ export default function DashboardPage() {
   });
 
   useEffect(() => {
-    if (session?.user) {
+    if (authUser) {
       setUser({
-        id: session.user.id || "",
-        name: session.user.name || "",
-        email: session.user.email || "",
-        city: session.user.city || "", 
+        id: authUser.sub || "",
+        name: authUser.name || "",
+        email: authUser.email || "",
+        city: "", // Auth0 ne fournit pas de city par défaut
       });
     }
-  }, [session]);
+  }, [authUser]);
 
   const handleRemoveFromFavorites = async (imdbId: string, title: string) => {
     if (!user?.id) {
@@ -80,7 +80,7 @@ export default function DashboardPage() {
     }
   };
 
-  if (!session) {
+  if (!authUser) {
     return (
       <div
         style={{

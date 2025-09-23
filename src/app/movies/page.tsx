@@ -2,9 +2,9 @@
 
 import { handleGraphQLError, showErrorToast, showSuccessToast } from "@/lib/error-handler";
 import { ADD_TO_FAVORITES_MUTATION, SEARCH_MOVIES_QUERY } from "@/lib/graphql";
+import { useUnifiedAuth } from "@/lib/hooks/useUnifiedAuth";
 import { MovieSearchResult } from "@/types";
 import { useMutation, useQuery } from "@apollo/client/react";
-import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 // import MovieCard from "@/components/MovieCard";
 
@@ -12,7 +12,7 @@ export default function MoviesPage() {
   const [searchQuery, setSearchQuery] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
   const [mounted, setMounted] = useState(false);
-  const { data: session } = useSession();
+  const { user: authUser } = useUnifiedAuth();
 
   useEffect(() => {
     setMounted(true);
@@ -47,19 +47,19 @@ export default function MoviesPage() {
   };
 
   const handleAddToFavorites = async (movie: MovieSearchResult) => {
-    if (!session) {
+    if (!authUser) {
       showErrorToast("Vous devez être connecté pour ajouter des favoris");
       return;
     }
 
-    if (!session.user?.id) {
+    if (!authUser?.sub) {
       showErrorToast("Erreur: Impossible de récupérer l'ID utilisateur");
       return;
     }
 
     try {
       const result = await addToFavorites({
-        variables: { userId: session.user.id, imdbId: movie.imdbID },
+        variables: { userId: authUser.sub, imdbId: movie.imdbID },
       });
       
       if (result.data) {
@@ -112,7 +112,7 @@ export default function MoviesPage() {
     );
   }
 
-  if (!session) {
+  if (!authUser) {
     return (
       <div
         style={{

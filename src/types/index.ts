@@ -1,27 +1,10 @@
-import { DefaultSession } from "next-auth";
-
-declare module "next-auth" {
-  interface Session {
-    user: {
-      id: string;
-      city?: string | null;
-    } & DefaultSession["user"];
-  }
-
-  interface User {
-    id: string;
-    name?: string | null;
-    email?: string | null;
-    image?: string | null;
-    city?: string | null;
-  }
-}
-
-declare module "next-auth/jwt" {
-  interface JWT {
-    id: string;
-    city?: string | null;
-  }
+// Types pour Auth0
+export interface Auth0User {
+  sub: string;
+  email: string;
+  name: string;
+  email_verified: boolean;
+  picture?: string;
 }
 
 export interface User {

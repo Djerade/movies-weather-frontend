@@ -2,8 +2,10 @@
 
 import { client } from "@/lib/apollo";
 import { ApolloProvider } from "@apollo/client/react";
-import { SessionProvider } from "next-auth/react";
+import { ChakraProvider, createSystem, defaultConfig } from "@chakra-ui/react";
 import ClientNavbar from "./ClientNavbar";
+
+const system = createSystem(defaultConfig);
 
 export default function Providers({
   children,
@@ -11,11 +13,11 @@ export default function Providers({
   children: React.ReactNode;
 }) {
   return (
-    <SessionProvider>
+    <ChakraProvider value={system}>
       <ApolloProvider client={client}>
         <ClientNavbar />
         {children}
       </ApolloProvider>
-    </SessionProvider>
+    </ChakraProvider>
   );
 }

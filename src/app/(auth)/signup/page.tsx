@@ -1,446 +1,138 @@
 "use client";
 
-import { useAuth } from "@/lib/hooks/useAuth";
-import { useState } from "react";
+import { useUnifiedAuth } from "@/lib/hooks/useUnifiedAuth";
+import { Box, Button, Container, Heading, Text } from "@chakra-ui/react";
+import Link from "next/link";
+import { FaGoogle } from "react-icons/fa";
 
 export default function SignupPage() {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [city, setCity] = useState("");
-  const { signup, isLoading, error } = useAuth();
+  const { signup, isLoading, error } = useUnifiedAuth();
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-
-    if (password !== confirmPassword) {
-      alert("Les mots de passe ne correspondent pas");
-      return;
-    }
-
-    await signup(name, email, password, city);
+  const handleAuth0Signup = () => {
+    // Auth0 gère l'inscription via le même flux de connexion
+    // avec le paramètre signup pour forcer l'affichage du formulaire d'inscription
+    signup();
   };
 
   return (
-    <div
-      style={{
-        minHeight: "100vh",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        background: "linear-gradient(135deg, #fd79a8 0%, #e84393 100%)",
-        padding: "2rem 1rem",
-      }}
+    <Box
+      minH="100vh"
+      bgGradient="linear(135deg, #667eea 0%, #764ba2 100%)"
+      display="flex"
+      alignItems="center"
+      justifyContent="center"
+      p={4}
     >
-      <div
-        style={{
-          background: "white",
-          borderRadius: "20px",
-          padding: "3rem",
-          boxShadow: "0 20px 40px rgba(0,0,0,0.1)",
-          width: "100%",
-          maxWidth: "500px",
-          position: "relative",
-          overflow: "hidden",
-        }}
-      >
-        {/* Decorative background elements */}
-        <div
-          style={{
-            position: "absolute",
-            top: "-50px",
-            right: "-50px",
-            width: "150px",
-            height: "150px",
-            background: "linear-gradient(135deg, #fd79a8 0%, #e84393 100%)",
-            borderRadius: "50%",
-            opacity: "0.1",
-          }}
-        ></div>
-        <div
-          style={{
-            position: "absolute",
-            bottom: "-30px",
-            left: "-30px",
-            width: "100px",
-            height: "100px",
-            background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
-            borderRadius: "50%",
-            opacity: "0.1",
-          }}
-        ></div>
+      <Container maxW="md">
+        <Box
+          bg="white"
+          borderRadius="20px"
+          p={8}
+          boxShadow="0 20px 40px rgba(0,0,0,0.1)"
+          position="relative"
+          overflow="hidden"
+        >
+          {/* Decorative elements */}
+          <Box
+            position="absolute"
+            top="-50px"
+            right="-50px"
+            w="150px"
+            h="150px"
+            bgGradient="linear(135deg, #667eea 0%, #764ba2 100%)"
+            borderRadius="50%"
+            opacity="0.1"
+          />
+          <Box
+            position="absolute"
+            bottom="-30px"
+            left="-30px"
+            w="100px"
+            h="100px"
+            bgGradient="linear(135deg, #fd79a8 0%, #e84393 100%)"
+            borderRadius="50%"
+            opacity="0.1"
+          />
 
-        <div style={{ position: "relative", zIndex: "1" }}>
-          <div style={{ textAlign: "center", marginBottom: "2.5rem" }}>
-            <div
-              style={{
-                background: "linear-gradient(135deg, #fd79a8 0%, #e84393 100%)",
-                width: "80px",
-                height: "80px",
-                borderRadius: "20px",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                margin: "0 auto 1.5rem",
-                boxShadow: "0 10px 25px rgba(253, 121, 168, 0.3)",
-              }}
+          <Box position="relative" zIndex={1}>
+            {/* Header */}
+            <Box textAlign="center" mb={8}>
+              <Box
+                w="80px"
+                h="80px"
+                bgGradient="linear(135deg, #667eea 0%, #764ba2 100%)"
+                borderRadius="20px"
+                display="flex"
+                alignItems="center"
+                justifyContent="center"
+                margin="0 auto 1.5rem"
+                boxShadow="0 10px 25px rgba(102, 126, 234, 0.3)"
+              >
+                <Text fontSize="2rem">🎬</Text>
+              </Box>
+              <Heading
+                size="lg"
+                bgGradient="linear(135deg, #667eea 0%, #764ba2 100%)"
+                bgClip="text"
+                mb={2}
+              >
+                Rejoignez-nous !
+              </Heading>
+              <Text color="gray.500" fontSize="lg">
+                Créez votre compte pour accéder à votre tableau de bord
+              </Text>
+            </Box>
+
+            {/* Error Alert */}
+            {error && (
+              <Box
+                p={4}
+                bg="red.50"
+                border="1px solid"
+                borderColor="red.200"
+                borderRadius="md"
+                color="red.600"
+                mb={6}
+              >
+                {error}
+              </Box>
+            )}
+
+            {/* Auth0 Signup Button */}
+            <Button
+              onClick={handleAuth0Signup}
+              size="lg"
+              w="full"
+              colorScheme="blue"
+              variant="outline"
+              loading={isLoading}
+              loadingText="Inscription..."
             >
-              <span style={{ fontSize: "2rem" }}>🌟</span>
-            </div>
-            <h1
-              style={{
-                fontSize: "2rem",
-                fontWeight: "700",
-                marginBottom: "0.5rem",
-                background: "linear-gradient(135deg, #fd79a8 0%, #e84393 100%)",
-                WebkitBackgroundClip: "text",
-                WebkitTextFillColor: "transparent",
-              }}
-            >
-              Rejoignez-nous !
-            </h1>
-            <p style={{ color: "#718096", fontSize: "1.1rem" }}>
-              Créez votre compte pour découvrir des films et la météo
-            </p>
-          </div>
+              <FaGoogle style={{ marginRight: '8px' }} />
+              S'inscrire avec Auth0
+            </Button>
 
-          {error && (
-            <div
-              style={{
-                padding: "1rem",
-                backgroundColor: "#fed7d7",
-                border: "1px solid #feb2b2",
-                borderRadius: "12px",
-                color: "#c53030",
-                marginBottom: "1.5rem",
-                fontSize: "0.95rem",
-                display: "flex",
-                alignItems: "center",
-              }}
-            >
-              <span style={{ marginRight: "0.5rem", fontSize: "1.2rem" }}>
-                ⚠️
-              </span>
-              {error}
-            </div>
-          )}
-
-          <form
-            onSubmit={handleSubmit}
-            style={{ display: "flex", flexDirection: "column", gap: "1.25rem" }}
-          >
-            <div>
-              <label
-                style={{
-                  display: "block",
-                  marginBottom: "0.75rem",
-                  fontWeight: "600",
-                  color: "#2d3748",
-                  fontSize: "0.95rem",
-                }}
-              >
-                Nom complet
-              </label>
-              <input
-                type="text"
-                value={name}
-                onChange={e => setName(e.target.value)}
-                placeholder="Votre nom complet"
-                required
-                style={{
-                  width: "100%",
-                  padding: "1rem",
-                  border: "2px solid #e2e8f0",
-                  borderRadius: "12px",
-                  fontSize: "1rem",
-                  color: "#2d3748",
-                  backgroundColor: "#ffffff",
-                  transition: "border-color 0.2s ease, box-shadow 0.2s ease",
-                  outline: "none",
-                }}
-                onFocus={e => {
-                  e.target.style.borderColor = "#fd79a8";
-                  e.target.style.boxShadow =
-                    "0 0 0 3px rgba(253, 121, 168, 0.1)";
-                }}
-                onBlur={e => {
-                  e.target.style.borderColor = "#e2e8f0";
-                  e.target.style.boxShadow = "none";
-                }}
-              />
-            </div>
-
-            <div>
-              <label
-                style={{
-                  display: "block",
-                  marginBottom: "0.75rem",
-                  fontWeight: "600",
-                  color: "#2d3748",
-                  fontSize: "0.95rem",
-                }}
-              >
-                Adresse email
-              </label>
-              <input
-                type="email"
-                value={email}
-                onChange={e => setEmail(e.target.value)}
-                placeholder="votre@email.com"
-                required
-                style={{
-                  width: "100%",
-                  padding: "1rem",
-                  border: "2px solid #e2e8f0",
-                  borderRadius: "12px",
-                  fontSize: "1rem",
-                  color: "#2d3748",
-                  backgroundColor: "#ffffff",
-                  transition: "border-color 0.2s ease, box-shadow 0.2s ease",
-                  outline: "none",
-                }}
-                onFocus={e => {
-                  e.target.style.borderColor = "#fd79a8";
-                  e.target.style.boxShadow =
-                    "0 0 0 3px rgba(253, 121, 168, 0.1)";
-                }}
-                onBlur={e => {
-                  e.target.style.borderColor = "#e2e8f0";
-                  e.target.style.boxShadow = "none";
-                }}
-              />
-            </div>
-
-            <div>
-              <label
-                style={{
-                  display: "block",
-                  marginBottom: "0.75rem",
-                  fontWeight: "600",
-                  color: "#2d3748",
-                  fontSize: "0.95rem",
-                }}
-              >
-                Ville
-              </label>
-              <input
-                type="text"
-                value={city}
-                onChange={e => setCity(e.target.value)}
-                placeholder="Votre ville"
-                required
-                style={{
-                  width: "100%",
-                  padding: "1rem",
-                  border: "2px solid #e2e8f0",
-                  borderRadius: "12px",
-                  fontSize: "1rem",
-                  color: "#2d3748",
-                  backgroundColor: "#ffffff",
-                  transition: "border-color 0.2s ease, box-shadow 0.2s ease",
-                  outline: "none",
-                }}
-                onFocus={e => {
-                  e.target.style.borderColor = "#fd79a8";
-                  e.target.style.boxShadow =
-                    "0 0 0 3px rgba(253, 121, 168, 0.1)";
-                }}
-                onBlur={e => {
-                  e.target.style.borderColor = "#e2e8f0";
-                  e.target.style.boxShadow = "none";
-                }}
-              />
-            </div>
-
-            <div>
-              <label
-                style={{
-                  display: "block",
-                  marginBottom: "0.75rem",
-                  fontWeight: "600",
-                  color: "#2d3748",
-                  fontSize: "0.95rem",
-                }}
-              >
-                Mot de passe
-              </label>
-              <input
-                type="password"
-                value={password}
-                onChange={e => setPassword(e.target.value)}
-                placeholder="Votre mot de passe"
-                required
-                style={{
-                  width: "100%",
-                  padding: "1rem",
-                  border: "2px solid #e2e8f0",
-                  borderRadius: "12px",
-                  fontSize: "1rem",
-                  color: "#2d3748",
-                  backgroundColor: "#ffffff",
-                  transition: "border-color 0.2s ease, box-shadow 0.2s ease",
-                  outline: "none",
-                }}
-                onFocus={e => {
-                  e.target.style.borderColor = "#fd79a8";
-                  e.target.style.boxShadow =
-                    "0 0 0 3px rgba(253, 121, 168, 0.1)";
-                }}
-                onBlur={e => {
-                  e.target.style.borderColor = "#e2e8f0";
-                  e.target.style.boxShadow = "none";
-                }}
-              />
-            </div>
-
-            <div>
-              <label
-                style={{
-                  display: "block",
-                  marginBottom: "0.75rem",
-                  fontWeight: "600",
-                  color: "#2d3748",
-                  fontSize: "0.95rem",
-                }}
-              >
-                Confirmer le mot de passe
-              </label>
-              <input
-                type="password"
-                value={confirmPassword}
-                onChange={e => setConfirmPassword(e.target.value)}
-                placeholder="Confirmez votre mot de passe"
-                required
-                style={{
-                  width: "100%",
-                  padding: "1rem",
-                  border: "2px solid #e2e8f0",
-                  borderRadius: "12px",
-                  fontSize: "1rem",
-                  color: "#2d3748",
-                  backgroundColor: "#ffffff",
-                  transition: "border-color 0.2s ease, box-shadow 0.2s ease",
-                  outline: "none",
-                }}
-                onFocus={e => {
-                  e.target.style.borderColor = "#fd79a8";
-                  e.target.style.boxShadow =
-                    "0 0 0 3px rgba(253, 121, 168, 0.1)";
-                }}
-                onBlur={e => {
-                  e.target.style.borderColor = "#e2e8f0";
-                  e.target.style.boxShadow = "none";
-                }}
-              />
-            </div>
-
-            <button
-              type="submit"
-              disabled={isLoading}
-              style={{
-                width: "100%",
-                padding: "1rem",
-                background: isLoading
-                  ? "linear-gradient(135deg, #9ca3af 0%, #6b7280 100%)"
-                  : "linear-gradient(135deg, #fd79a8 0%, #e84393 100%)",
-                color: "white",
-                border: "none",
-                borderRadius: "12px",
-                fontSize: "1.1rem",
-                fontWeight: "600",
-                cursor: isLoading ? "not-allowed" : "pointer",
-                transition: "transform 0.2s ease, box-shadow 0.2s ease",
-                boxShadow: isLoading
-                  ? "none"
-                  : "0 5px 15px rgba(253, 121, 168, 0.4)",
-              }}
-              onMouseOver={e => {
-                if (!isLoading) {
-                  e.currentTarget.style.transform = "translateY(-2px)";
-                  e.currentTarget.style.boxShadow =
-                    "0 8px 25px rgba(253, 121, 168, 0.5)";
-                }
-              }}
-              onMouseOut={e => {
-                if (!isLoading) {
-                  e.currentTarget.style.transform = "translateY(0)";
-                  e.currentTarget.style.boxShadow =
-                    "0 5px 15px rgba(253, 121, 168, 0.4)";
-                }
-              }}
-            >
-              {isLoading ? (
-                <div
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    gap: "0.5rem",
+            {/* Login Link */}
+            <Box textAlign="center" mt={6} pt={4} borderTop="1px" borderColor="gray.200">
+              <Text color="gray.500" fontSize="sm" mb={3}>
+                Déjà un compte ?
+              </Text>
+              <Link href="/login">
+                <Button
+                  size="md"
+                  variant="ghost"
+                  colorScheme="blue"
+                  _hover={{
+                    transform: "translateY(-2px)",
                   }}
                 >
-                  <div
-                    style={{
-                      width: "20px",
-                      height: "20px",
-                      border: "2px solid rgba(255,255,255,0.3)",
-                      borderTop: "2px solid white",
-                      borderRadius: "50%",
-                      animation: "spin 1s linear infinite",
-                    }}
-                  ></div>
-                  Création du compte...
-                </div>
-              ) : (
-                "Créer mon compte"
-              )}
-            </button>
-
-            <div
-              style={{
-                textAlign: "center",
-                padding: "1.5rem 0",
-                borderTop: "1px solid #e2e8f0",
-                marginTop: "1rem",
-              }}
-            >
-              <p
-                style={{
-                  color: "#718096",
-                  fontSize: "0.95rem",
-                  margin: "0 0 1rem 0",
-                }}
-              >
-                Déjà un compte ?
-              </p>
-              <a
-                href="/login"
-                style={{
-                  display: "inline-block",
-                  background:
-                    "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
-                  color: "white",
-                  padding: "0.75rem 1.5rem",
-                  borderRadius: "10px",
-                  textDecoration: "none",
-                  fontSize: "0.95rem",
-                  fontWeight: "600",
-                  transition: "transform 0.2s ease",
-                  boxShadow: "0 3px 10px rgba(102, 126, 234, 0.3)",
-                }}
-                onMouseOver={e =>
-                  (e.currentTarget.style.transform = "translateY(-2px)")
-                }
-                onMouseOut={e =>
-                  (e.currentTarget.style.transform = "translateY(0)")
-                }
-              >
-                Se connecter
-              </a>
-            </div>
-          </form>
-        </div>
-      </div>
-    </div>
+                  Se connecter
+                </Button>
+              </Link>
+            </Box>
+          </Box>
+        </Box>
+      </Container>
+    </Box>
   );
 }

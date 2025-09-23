@@ -1,15 +1,15 @@
 "use client";
 
-import { useAuth } from "@/lib/hooks/useAuth";
+import { useUnifiedAuth } from "@/lib/hooks/useUnifiedAuth";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 
 export default function HomePage() {
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated } = useUnifiedAuth();
   const router = useRouter();
 
   useEffect(() => {
-    if (isAuthenticated()) {
+    if (isAuthenticated) {
       router.push("/dashboard");
     } else {
       router.push("/login");
