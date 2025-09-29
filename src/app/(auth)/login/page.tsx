@@ -106,12 +106,18 @@ export default function LoginPage() {
               loading={isLoading}
               loadingText="Connexion..."
             >
-              <FaGoogle style={{ marginRight: '8px' }} />
+              <FaGoogle style={{ marginRight: "8px" }} />
               Se connecter avec Auth0
             </Button>
 
             {/* Signup Link */}
-            <Box textAlign="center" mt={6} pt={4} borderTop="1px" borderColor="gray.200">
+            <Box
+              textAlign="center"
+              mt={6}
+              pt={4}
+              borderTop="1px"
+              borderColor="gray.200"
+            >
               <Text color="gray.500" fontSize="sm" mb={3}>
                 Pas encore de compte ?
               </Text>

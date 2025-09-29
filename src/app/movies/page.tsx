@@ -1,6 +1,10 @@
 "use client";
 
-import { handleGraphQLError, showErrorToast, showSuccessToast } from "@/lib/error-handler";
+import {
+  handleGraphQLError,
+  showErrorToast,
+  showSuccessToast,
+} from "@/lib/error-handler";
 import { ADD_TO_FAVORITES_MUTATION, SEARCH_MOVIES_QUERY } from "@/lib/graphql";
 import { useUnifiedAuth } from "@/lib/hooks/useUnifiedAuth";
 import { MovieSearchResult } from "@/types";
@@ -61,7 +65,7 @@ export default function MoviesPage() {
       const result = await addToFavorites({
         variables: { userId: authUser.sub, imdbId: movie.imdbID },
       });
-      
+
       if (result.data) {
         showSuccessToast(`${movie.title} ajouté à vos favoris !`);
       }

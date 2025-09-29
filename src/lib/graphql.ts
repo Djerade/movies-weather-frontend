@@ -30,6 +30,19 @@ export const SIGNUP_MUTATION = gql`
   }
 `;
 
+export const CREATE_AUTH0_USER_MUTATION = gql`
+  mutation CreateAuth0User($name: String!, $email: String!, $city: String!) {
+    createAuth0User(name: $name, email: $email, city: $city) {
+      id
+      name
+      email
+      city
+      favoriteMovies
+      message
+    }
+  }
+`;
+
 // User queries
 export const GET_USER_QUERY = gql`
   query GetUser {

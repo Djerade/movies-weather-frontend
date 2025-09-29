@@ -11,32 +11,32 @@ export interface GraphQLError {
 export function handleGraphQLError(error: any): string {
   if (error.graphQLErrors && error.graphQLErrors.length > 0) {
     const graphQLError = error.graphQLErrors[0];
-    
+
     // Gestion spécifique des erreurs connues
     if (graphQLError.message.includes("already in favorites")) {
       return "Ce film est déjà dans vos favoris";
     }
-    
+
     if (graphQLError.message.includes("Movie not found")) {
       return "Film introuvable";
     }
-    
+
     if (graphQLError.message.includes("User not found")) {
       return "Utilisateur introuvable";
     }
-    
+
     if (graphQLError.message.includes("Unauthorized")) {
       return "Vous devez être connecté pour effectuer cette action";
     }
-    
+
     // Retourner le message d'erreur par défaut
     return graphQLError.message;
   }
-  
+
   if (error.networkError) {
     return "Erreur de connexion au serveur";
   }
-  
+
   return "Une erreur inattendue s'est produite";
 }
 

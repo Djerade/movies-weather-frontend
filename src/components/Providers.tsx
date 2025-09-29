@@ -7,11 +7,7 @@ import ClientNavbar from "./ClientNavbar";
 
 const system = createSystem(defaultConfig);
 
-export default function Providers({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function Providers({ children }: { children: React.ReactNode }) {
   return (
     <ChakraProvider value={system}>
       <ApolloProvider client={client}>

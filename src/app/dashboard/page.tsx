@@ -327,7 +327,7 @@ export default function DashboardPage() {
                     textAlign: "center",
                   }}
                 >
-                   Aucune ville configurée
+                  Aucune ville configurée
                   <p
                     style={{
                       fontSize: "0.9rem",
@@ -390,7 +390,7 @@ export default function DashboardPage() {
                       }}
                     >
                       <span style={{ color: "#718096" }}>Ressenti:</span>
-                      <span style={{ fontWeight: "600" , color: "#2d3748" }}>
+                      <span style={{ fontWeight: "600", color: "#2d3748" }}>
                         {(weatherData as any).weather.feelsLike}°
                       </span>
                     </div>
@@ -401,7 +401,7 @@ export default function DashboardPage() {
                       }}
                     >
                       <span style={{ color: "#718096" }}>Humidité:</span>
-                      <span style={{ fontWeight: "600" , color: "#2d3748" }}>
+                      <span style={{ fontWeight: "600", color: "#2d3748" }}>
                         {(weatherData as any).weather.humidity}%
                       </span>
                     </div>
@@ -412,7 +412,7 @@ export default function DashboardPage() {
                       }}
                     >
                       <span style={{ color: "#718096" }}>Vent:</span>
-                      <span style={{ fontWeight: "600" , color: "#2d3748" }}>
+                      <span style={{ fontWeight: "600", color: "#2d3748" }}>
                         {(weatherData as any).weather.windSpeed} km/h
                       </span>
                     </div>
@@ -423,7 +423,7 @@ export default function DashboardPage() {
                       }}
                     >
                       <span style={{ color: "#718096" }}>UV Index:</span>
-                      <span style={{ fontWeight: "600" , color: "#2d3748" }}>
+                      <span style={{ fontWeight: "600", color: "#2d3748" }}>
                         {(weatherData as any).weather.uvIndex}
                       </span>
                     </div>
@@ -533,7 +533,6 @@ export default function DashboardPage() {
               </div>
             </div>
           </div>
-
         </div>
 
         {/* Favorites Section */}

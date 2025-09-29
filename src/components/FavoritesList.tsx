@@ -2,12 +2,12 @@
 
 import { StarIcon } from "@chakra-ui/icons";
 import {
-    Box,
-    HStack,
-    SimpleGrid,
-    Spinner,
-    Text,
-    VStack,
+  Box,
+  HStack,
+  SimpleGrid,
+  Spinner,
+  Text,
+  VStack,
 } from "@chakra-ui/react";
 import MovieCard from "./MovieCard";
 
