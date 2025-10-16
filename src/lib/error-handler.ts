@@ -1,4 +1,3 @@
-// Utilitaire pour gérer les erreurs GraphQL de manière cohérente
 
 export interface GraphQLError {
   message: string;

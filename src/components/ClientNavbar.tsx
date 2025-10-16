@@ -59,15 +59,15 @@ export default function ClientNavbar() {
           <span>Chargement...</span>
         ) : session ? (
           <div style={{ display: "flex", gap: "1rem", alignItems: "center" }}>
-              <span
-                style={{
-                  fontSize: "1rem",
-                  fontWeight: "600",
-                  color: "#2d3748",
-                }}
-              >
-                {session.user?.name}
-              </span>
+            <span
+              style={{
+                fontSize: "1rem",
+                fontWeight: "600",
+                color: "#2d3748",
+              }}
+            >
+              {session.user?.name}
+            </span>
             <button
               onClick={handleSignOut}
               style={{
@@ -81,11 +81,11 @@ export default function ClientNavbar() {
                 fontWeight: "500",
                 transition: "all 0.2s ease",
               }}
-              onMouseOver={(e) => {
+              onMouseOver={e => {
                 e.currentTarget.style.backgroundColor = "#e53e3e";
                 e.currentTarget.style.color = "white";
               }}
-              onMouseOut={(e) => {
+              onMouseOut={e => {
                 e.currentTarget.style.backgroundColor = "transparent";
                 e.currentTarget.style.color = "#e53e3e";
               }}

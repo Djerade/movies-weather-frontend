@@ -1,6 +1,10 @@
 "use client";
 
-import { handleGraphQLError, showErrorToast, showSuccessToast } from "@/lib/error-handler";
+import {
+  handleGraphQLError,
+  showErrorToast,
+  showSuccessToast,
+} from "@/lib/error-handler";
 import { ADD_TO_FAVORITES_MUTATION, SEARCH_MOVIES_QUERY } from "@/lib/graphql";
 import { MovieSearchResult } from "@/types";
 import { useMutation, useQuery } from "@apollo/client/react";
@@ -61,7 +65,7 @@ export default function MoviesPage() {
       const result = await addToFavorites({
         variables: { userId: session.user.id, imdbId: movie.imdbID },
       });
-      
+
       if (result.data) {
         showSuccessToast(`${movie.title} ajouté à vos favoris !`);
       }
@@ -112,65 +116,6 @@ export default function MoviesPage() {
     );
   }
 
-  if (!session) {
-    return (
-      <div
-        style={{
-          minHeight: "100vh",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
-        }}
-      >
-        <div
-          style={{
-            background: "white",
-            padding: "3rem",
-            borderRadius: "16px",
-            boxShadow: "0 20px 40px rgba(0,0,0,0.1)",
-            textAlign: "center",
-            maxWidth: "400px",
-            width: "90%",
-          }}
-        >
-          <h1
-            style={{
-              fontSize: "1.8rem",
-              marginBottom: "1rem",
-              color: "#2d3748",
-            }}
-          >
-            Accès non autorisé
-          </h1>
-          <p style={{ color: "#718096", marginBottom: "2rem" }}>
-            Vous devez être connecté pour accéder à cette page.
-          </p>
-          <a
-            href="/login"
-            style={{
-              display: "inline-block",
-              background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
-              color: "white",
-              padding: "0.75rem 2rem",
-              borderRadius: "8px",
-              textDecoration: "none",
-              fontWeight: "600",
-              transition: "transform 0.2s",
-            }}
-            onMouseOver={e =>
-              (e.currentTarget.style.transform = "translateY(-2px)")
-            }
-            onMouseOut={e =>
-              (e.currentTarget.style.transform = "translateY(0)")
-            }
-          >
-            Se connecter
-          </a>
-        </div>
-      </div>
-    );
-  }
 
   return (
     <div

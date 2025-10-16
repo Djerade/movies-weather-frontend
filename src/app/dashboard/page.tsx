@@ -20,6 +20,11 @@ export default function DashboardPage() {
     email: string;
     city: string;
   } | null>(null);
+  const [showConfirmDialog, setShowConfirmDialog] = useState(false);
+  const [confirmData, setConfirmData] = useState<{
+    imdbId: string;
+    title: string;
+  } | null>(null);
 
   const {
     data: weatherData,
@@ -30,6 +35,7 @@ export default function DashboardPage() {
     skip: !user?.city,
     errorPolicy: "all",
   });
+  
   const {
     data: favoritesData,
     loading: favoritesLoading,
@@ -55,90 +61,39 @@ export default function DashboardPage() {
         id: session.user.id || "",
         name: session.user.name || "",
         email: session.user.email || "",
-        city: session.user.city || "", 
+        city: session.user.city || "",
       });
     }
   }, [session]);
 
-  const handleRemoveFromFavorites = async (imdbId: string, title: string) => {
+  const handleRemoveFromFavorites = (imdbId: string, title: string) => {
     if (!user?.id) {
       return;
     }
+    setConfirmData({ imdbId, title });
+    setShowConfirmDialog(true);
+  };
 
-    if (
-      window.confirm(
-        `Êtes-vous sûr de vouloir retirer "${title}" de vos favoris ?`
-      )
-    ) {
-      try {
-        await removeFromFavorites({
-          variables: { userId: user.id, imdbId },
-        });
-      } catch (error) {
-        console.error("Error removing from favorites:", error);
-      }
+  const confirmRemoveFromFavorites = async () => {
+    if (!user?.id || !confirmData) {
+      return;
+    }
+
+    try {
+      await removeFromFavorites({
+        variables: { userId: user.id, imdbId: confirmData.imdbId },
+      });
+      setShowConfirmDialog(false);
+      setConfirmData(null);
+    } catch (error) {
+      console.error("Error removing from favorites:", error);
     }
   };
 
-  if (!session) {
-    return (
-      <div
-        style={{
-          minHeight: "100vh",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
-        }}
-      >
-        <div
-          style={{
-            background: "white",
-            padding: "3rem",
-            borderRadius: "16px",
-            boxShadow: "0 20px 40px rgba(0,0,0,0.1)",
-            textAlign: "center",
-            maxWidth: "400px",
-            width: "90%",
-          }}
-        >
-          <h1
-            style={{
-              fontSize: "1.8rem",
-              marginBottom: "1rem",
-              color: "#2d3748",
-            }}
-          >
-            Accès non autorisé
-          </h1>
-          <p style={{ color: "#718096", marginBottom: "2rem" }}>
-            Vous devez être connecté pour accéder à cette page.
-          </p>
-          <a
-            href="/login"
-            style={{
-              display: "inline-block",
-              background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
-              color: "white",
-              padding: "0.75rem 2rem",
-              borderRadius: "8px",
-              textDecoration: "none",
-              fontWeight: "600",
-              transition: "transform 0.2s",
-            }}
-            onMouseOver={e =>
-              (e.currentTarget.style.transform = "translateY(-2px)")
-            }
-            onMouseOut={e =>
-              (e.currentTarget.style.transform = "translateY(0)")
-            }
-          >
-            Se connecter
-          </a>
-        </div>
-      </div>
-    );
-  }
+  const cancelRemoveFromFavorites = () => {
+    setShowConfirmDialog(false);
+    setConfirmData(null);
+  };
 
   return (
     <div
@@ -327,7 +282,7 @@ export default function DashboardPage() {
                     textAlign: "center",
                   }}
                 >
-                   Aucune ville configurée
+                  Aucune ville configurée
                   <p
                     style={{
                       fontSize: "0.9rem",
@@ -390,7 +345,7 @@ export default function DashboardPage() {
                       }}
                     >
                       <span style={{ color: "#718096" }}>Ressenti:</span>
-                      <span style={{ fontWeight: "600" , color: "#2d3748" }}>
+                      <span style={{ fontWeight: "600", color: "#2d3748" }}>
                         {(weatherData as any).weather.feelsLike}°
                       </span>
                     </div>
@@ -401,7 +356,7 @@ export default function DashboardPage() {
                       }}
                     >
                       <span style={{ color: "#718096" }}>Humidité:</span>
-                      <span style={{ fontWeight: "600" , color: "#2d3748" }}>
+                      <span style={{ fontWeight: "600", color: "#2d3748" }}>
                         {(weatherData as any).weather.humidity}%
                       </span>
                     </div>
@@ -412,7 +367,7 @@ export default function DashboardPage() {
                       }}
                     >
                       <span style={{ color: "#718096" }}>Vent:</span>
-                      <span style={{ fontWeight: "600" , color: "#2d3748" }}>
+                      <span style={{ fontWeight: "600", color: "#2d3748" }}>
                         {(weatherData as any).weather.windSpeed} km/h
                       </span>
                     </div>
@@ -423,7 +378,7 @@ export default function DashboardPage() {
                       }}
                     >
                       <span style={{ color: "#718096" }}>UV Index:</span>
-                      <span style={{ fontWeight: "600" , color: "#2d3748" }}>
+                      <span style={{ fontWeight: "600", color: "#2d3748" }}>
                         {(weatherData as any).weather.uvIndex}
                       </span>
                     </div>
@@ -533,7 +488,6 @@ export default function DashboardPage() {
               </div>
             </div>
           </div>
-
         </div>
 
         {/* Favorites Section */}
@@ -907,6 +861,138 @@ export default function DashboardPage() {
           )}
         </div>
       </div>
+
+      {/* Popup de confirmation */}
+      {showConfirmDialog && confirmData && (
+        <div
+          style={{
+            position: "fixed",
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            backgroundColor: "rgba(0, 0, 0, 0.5)",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            zIndex: 1000,
+            padding: "1rem",
+          }}
+        >
+          <div
+            style={{
+              background: "white",
+              borderRadius: "16px",
+              padding: "2rem",
+              maxWidth: "400px",
+              width: "100%",
+              boxShadow: "0 20px 40px rgba(0,0,0,0.15)",
+              textAlign: "center",
+            }}
+          >
+            {/* Icône d'alerte */}
+            <div
+              style={{
+                width: "60px",
+                height: "60px",
+                borderRadius: "50%",
+                backgroundColor: "#fed7d7",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                margin: "0 auto 1.5rem",
+                fontSize: "1.5rem",
+              }}
+            >
+              ⚠️
+            </div>
+
+            {/* Titre */}
+            <h3
+              style={{
+                fontSize: "1.25rem",
+                fontWeight: "600",
+                color: "#2d3748",
+                marginBottom: "1rem",
+              }}
+            >
+              Confirmer la suppression
+            </h3>
+
+            {/* Message */}
+            <p
+              style={{
+                color: "#718096",
+                fontSize: "1rem",
+                lineHeight: "1.5",
+                marginBottom: "2rem",
+              }}
+            >
+              Êtes-vous sûr de vouloir retirer{" "}
+              <strong style={{ color: "#2d3748" }}>"{confirmData.title}"</strong>{" "}
+              de vos favoris ?
+            </p>
+
+            {/* Boutons d'action */}
+            <div
+              style={{
+                display: "flex",
+                gap: "1rem",
+                justifyContent: "center",
+              }}
+            >
+              <button
+                onClick={cancelRemoveFromFavorites}
+                style={{
+                  padding: "0.75rem 1.5rem",
+                  fontSize: "0.875rem",
+                  fontWeight: "500",
+                  backgroundColor: "transparent",
+                  border: "2px solid #e2e8f0",
+                  borderRadius: "8px",
+                  cursor: "pointer",
+                  color: "#4a5568",
+                  transition: "all 0.2s ease",
+                }}
+                onMouseOver={(e) => {
+                  e.currentTarget.style.backgroundColor = "#f7fafc";
+                  e.currentTarget.style.borderColor = "#cbd5e0";
+                }}
+                onMouseOut={(e) => {
+                  e.currentTarget.style.backgroundColor = "transparent";
+                  e.currentTarget.style.borderColor = "#e2e8f0";
+                }}
+              >
+                Annuler
+              </button>
+              <button
+                onClick={confirmRemoveFromFavorites}
+                style={{
+                  padding: "0.75rem 1.5rem",
+                  fontSize: "0.875rem",
+                  fontWeight: "500",
+                  backgroundColor: "#e53e3e",
+                  border: "none",
+                  borderRadius: "8px",
+                  cursor: "pointer",
+                  color: "white",
+                  transition: "all 0.2s ease",
+                }}
+                onMouseOver={(e) => {
+                  e.currentTarget.style.backgroundColor = "#c53030";
+                  e.currentTarget.style.transform = "translateY(-1px)";
+                }}
+                onMouseOut={(e) => {
+                  e.currentTarget.style.backgroundColor = "#e53e3e";
+                  e.currentTarget.style.transform = "translateY(0)";
+                }}
+              >
+                Supprimer
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

@@ -1,43 +1,49 @@
 "use client";
 
+import { loginSchema } from "@/lib/formik-config";
+import { useFormik } from "formik";
 import { getSession, signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 export default function LoginPage() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsLoading(true);
-    setError(null);
+  const formik = useFormik({
+    initialValues: {
+      email: "",
+      password: "",
+    },
+    validationSchema: loginSchema,
+    onSubmit: async values => {
+      setIsLoading(true);
+      setError(null);
 
-    try {
-      const result = await signIn("credentials", {
-        email,
-        password,
-        redirect: false,
-      });
+      try {
+        const result = await signIn("credentials", {
+          email: values.email,
+          password: values.password,
+          redirect: false,
+        });
 
-      if (result?.error) {
-        setError("Email ou mot de passe incorrect");
-      } else if (result?.ok) {
-        // Vérifier la session
-        const session = await getSession();
-        if (session) {
-          router.push("/dashboard");
+        if (result?.error) {
+          setError("Email ou mot de passe incorrect");
+        } else if (result?.ok) {
+          // Vérifier la session
+          const session = await getSession();
+          if (session) {
+            router.push("/dashboard");
+          }
         }
+      } catch (err) {
+        setError("Erreur de connexion");
+      } finally {
+        setIsLoading(false);
       }
-    } catch (err) {
-      setError("Erreur de connexion");
-    } finally {
-      setIsLoading(false);
-    }
-  };
+    },
+  });
 
   return (
     <div
@@ -144,7 +150,7 @@ export default function LoginPage() {
           )}
 
           <form
-            onSubmit={handleSubmit}
+            onSubmit={formik.handleSubmit}
             style={{ display: "flex", flexDirection: "column", gap: "1.5rem" }}
           >
             <div>
@@ -161,14 +167,14 @@ export default function LoginPage() {
               </label>
               <input
                 type="email"
-                value={email}
-                onChange={e => setEmail(e.target.value)}
+                name="email"
+                value={formik.values.email}
+                onChange={formik.handleChange}
                 placeholder="votre@email.com"
-                required
                 style={{
                   width: "100%",
                   padding: "1rem",
-                  border: "2px solid #e2e8f0",
+                  border: `2px solid ${formik.errors.email && formik.touched.email ? "#e53e3e" : "#e2e8f0"}`,
                   borderRadius: "12px",
                   fontSize: "1rem",
                   color: "#2d3748",
@@ -182,10 +188,29 @@ export default function LoginPage() {
                     "0 0 0 3px rgba(102, 126, 234, 0.1)";
                 }}
                 onBlur={e => {
-                  e.target.style.borderColor = "#e2e8f0";
+                  formik.handleBlur(e);
+                  e.target.style.borderColor =
+                    formik.errors.email && formik.touched.email
+                      ? "#e53e3e"
+                      : "#e2e8f0";
                   e.target.style.boxShadow = "none";
                 }}
               />
+              {formik.errors.email && formik.touched.email && (
+                <div
+                  style={{
+                    color: "#e53e3e",
+                    fontSize: "0.875rem",
+                    marginTop: "0.5rem",
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "0.25rem",
+                  }}
+                >
+                  <span>⚠️</span>
+                  {formik.errors.email}
+                </div>
+              )}
             </div>
 
             <div>
@@ -202,14 +227,14 @@ export default function LoginPage() {
               </label>
               <input
                 type="password"
-                value={password}
-                onChange={e => setPassword(e.target.value)}
+                name="password"
+                value={formik.values.password}
+                onChange={formik.handleChange}
                 placeholder="Votre mot de passe"
-                required
                 style={{
                   width: "100%",
                   padding: "1rem",
-                  border: "2px solid #e2e8f0",
+                  border: `2px solid ${formik.errors.password && formik.touched.password ? "#e53e3e" : "#e2e8f0"}`,
                   borderRadius: "12px",
                   fontSize: "1rem",
                   color: "#2d3748",
@@ -223,10 +248,29 @@ export default function LoginPage() {
                     "0 0 0 3px rgba(102, 126, 234, 0.1)";
                 }}
                 onBlur={e => {
-                  e.target.style.borderColor = "#e2e8f0";
+                  formik.handleBlur(e);
+                  e.target.style.borderColor =
+                    formik.errors.password && formik.touched.password
+                      ? "#e53e3e"
+                      : "#e2e8f0";
                   e.target.style.boxShadow = "none";
                 }}
               />
+              {formik.errors.password && formik.touched.password && (
+                <div
+                  style={{
+                    color: "#e53e3e",
+                    fontSize: "0.875rem",
+                    marginTop: "0.5rem",
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "0.25rem",
+                  }}
+                >
+                  <span>⚠️</span>
+                  {formik.errors.password}
+                </div>
+              )}
             </div>
 
             <button

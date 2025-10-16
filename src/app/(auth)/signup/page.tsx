@@ -1,26 +1,25 @@
 "use client";
 
+import { signupSchema } from "@/lib/formik-config";
 import { useAuth } from "@/lib/hooks/useAuth";
-import { useState } from "react";
+import { useFormik } from "formik";
 
 export default function SignupPage() {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [city, setCity] = useState("");
   const { signup, isLoading, error } = useAuth();
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-
-    if (password !== confirmPassword) {
-      alert("Les mots de passe ne correspondent pas");
-      return;
-    }
-
-    await signup(name, email, password, city);
-  };
+  const formik = useFormik({
+    initialValues: {
+      name: "",
+      email: "",
+      password: "",
+      confirmPassword: "",
+      city: "",
+    },
+    validationSchema: signupSchema,
+    onSubmit: async values => {
+      await signup(values.name, values.email, values.password, values.city);
+    },
+  });
 
   return (
     <div
@@ -127,7 +126,7 @@ export default function SignupPage() {
           )}
 
           <form
-            onSubmit={handleSubmit}
+            onSubmit={formik.handleSubmit}
             style={{ display: "flex", flexDirection: "column", gap: "1.25rem" }}
           >
             <div>
@@ -144,14 +143,14 @@ export default function SignupPage() {
               </label>
               <input
                 type="text"
-                value={name}
-                onChange={e => setName(e.target.value)}
+                name="name"
+                value={formik.values.name}
+                onChange={formik.handleChange}
                 placeholder="Votre nom complet"
-                required
                 style={{
                   width: "100%",
                   padding: "1rem",
-                  border: "2px solid #e2e8f0",
+                  border: `2px solid ${formik.errors.name && formik.touched.name ? "#e53e3e" : "#e2e8f0"}`,
                   borderRadius: "12px",
                   fontSize: "1rem",
                   color: "#2d3748",
@@ -165,10 +164,29 @@ export default function SignupPage() {
                     "0 0 0 3px rgba(253, 121, 168, 0.1)";
                 }}
                 onBlur={e => {
-                  e.target.style.borderColor = "#e2e8f0";
+                  formik.handleBlur(e);
+                  e.target.style.borderColor =
+                    formik.errors.name && formik.touched.name
+                      ? "#e53e3e"
+                      : "#e2e8f0";
                   e.target.style.boxShadow = "none";
                 }}
               />
+              {formik.errors.name && formik.touched.name && (
+                <div
+                  style={{
+                    color: "#e53e3e",
+                    fontSize: "0.875rem",
+                    marginTop: "0.5rem",
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "0.25rem",
+                  }}
+                >
+                  <span>⚠️</span>
+                  {formik.errors.name}
+                </div>
+              )}
             </div>
 
             <div>
@@ -185,14 +203,14 @@ export default function SignupPage() {
               </label>
               <input
                 type="email"
-                value={email}
-                onChange={e => setEmail(e.target.value)}
+                name="email"
+                value={formik.values.email}
+                onChange={formik.handleChange}
                 placeholder="votre@email.com"
-                required
                 style={{
                   width: "100%",
                   padding: "1rem",
-                  border: "2px solid #e2e8f0",
+                  border: `2px solid ${formik.errors.email && formik.touched.email ? "#e53e3e" : "#e2e8f0"}`,
                   borderRadius: "12px",
                   fontSize: "1rem",
                   color: "#2d3748",
@@ -206,10 +224,29 @@ export default function SignupPage() {
                     "0 0 0 3px rgba(253, 121, 168, 0.1)";
                 }}
                 onBlur={e => {
-                  e.target.style.borderColor = "#e2e8f0";
+                  formik.handleBlur(e);
+                  e.target.style.borderColor =
+                    formik.errors.email && formik.touched.email
+                      ? "#e53e3e"
+                      : "#e2e8f0";
                   e.target.style.boxShadow = "none";
                 }}
               />
+              {formik.errors.email && formik.touched.email && (
+                <div
+                  style={{
+                    color: "#e53e3e",
+                    fontSize: "0.875rem",
+                    marginTop: "0.5rem",
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "0.25rem",
+                  }}
+                >
+                  <span>⚠️</span>
+                  {formik.errors.email}
+                </div>
+              )}
             </div>
 
             <div>
@@ -226,14 +263,14 @@ export default function SignupPage() {
               </label>
               <input
                 type="text"
-                value={city}
-                onChange={e => setCity(e.target.value)}
+                name="city"
+                value={formik.values.city}
+                onChange={formik.handleChange}
                 placeholder="Votre ville"
-                required
                 style={{
                   width: "100%",
                   padding: "1rem",
-                  border: "2px solid #e2e8f0",
+                  border: `2px solid ${formik.errors.city && formik.touched.city ? "#e53e3e" : "#e2e8f0"}`,
                   borderRadius: "12px",
                   fontSize: "1rem",
                   color: "#2d3748",
@@ -247,10 +284,29 @@ export default function SignupPage() {
                     "0 0 0 3px rgba(253, 121, 168, 0.1)";
                 }}
                 onBlur={e => {
-                  e.target.style.borderColor = "#e2e8f0";
+                  formik.handleBlur(e);
+                  e.target.style.borderColor =
+                    formik.errors.city && formik.touched.city
+                      ? "#e53e3e"
+                      : "#e2e8f0";
                   e.target.style.boxShadow = "none";
                 }}
               />
+              {formik.errors.city && formik.touched.city && (
+                <div
+                  style={{
+                    color: "#e53e3e",
+                    fontSize: "0.875rem",
+                    marginTop: "0.5rem",
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "0.25rem",
+                  }}
+                >
+                  <span>⚠️</span>
+                  {formik.errors.city}
+                </div>
+              )}
             </div>
 
             <div>
@@ -267,14 +323,14 @@ export default function SignupPage() {
               </label>
               <input
                 type="password"
-                value={password}
-                onChange={e => setPassword(e.target.value)}
+                name="password"
+                value={formik.values.password}
+                onChange={formik.handleChange}
                 placeholder="Votre mot de passe"
-                required
                 style={{
                   width: "100%",
                   padding: "1rem",
-                  border: "2px solid #e2e8f0",
+                  border: `2px solid ${formik.errors.password && formik.touched.password ? "#e53e3e" : "#e2e8f0"}`,
                   borderRadius: "12px",
                   fontSize: "1rem",
                   color: "#2d3748",
@@ -288,10 +344,29 @@ export default function SignupPage() {
                     "0 0 0 3px rgba(253, 121, 168, 0.1)";
                 }}
                 onBlur={e => {
-                  e.target.style.borderColor = "#e2e8f0";
+                  formik.handleBlur(e);
+                  e.target.style.borderColor =
+                    formik.errors.password && formik.touched.password
+                      ? "#e53e3e"
+                      : "#e2e8f0";
                   e.target.style.boxShadow = "none";
                 }}
               />
+              {formik.errors.password && formik.touched.password && (
+                <div
+                  style={{
+                    color: "#e53e3e",
+                    fontSize: "0.875rem",
+                    marginTop: "0.5rem",
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "0.25rem",
+                  }}
+                >
+                  <span>⚠️</span>
+                  {formik.errors.password}
+                </div>
+              )}
             </div>
 
             <div>
@@ -308,14 +383,14 @@ export default function SignupPage() {
               </label>
               <input
                 type="password"
-                value={confirmPassword}
-                onChange={e => setConfirmPassword(e.target.value)}
+                name="confirmPassword"
+                value={formik.values.confirmPassword}
+                onChange={formik.handleChange}
                 placeholder="Confirmez votre mot de passe"
-                required
                 style={{
                   width: "100%",
                   padding: "1rem",
-                  border: "2px solid #e2e8f0",
+                  border: `2px solid ${formik.errors.confirmPassword && formik.touched.confirmPassword ? "#e53e3e" : "#e2e8f0"}`,
                   borderRadius: "12px",
                   fontSize: "1rem",
                   color: "#2d3748",
@@ -329,10 +404,31 @@ export default function SignupPage() {
                     "0 0 0 3px rgba(253, 121, 168, 0.1)";
                 }}
                 onBlur={e => {
-                  e.target.style.borderColor = "#e2e8f0";
+                  formik.handleBlur(e);
+                  e.target.style.borderColor =
+                    formik.errors.confirmPassword &&
+                    formik.touched.confirmPassword
+                      ? "#e53e3e"
+                      : "#e2e8f0";
                   e.target.style.boxShadow = "none";
                 }}
               />
+              {formik.errors.confirmPassword &&
+                formik.touched.confirmPassword && (
+                  <div
+                    style={{
+                      color: "#e53e3e",
+                      fontSize: "0.875rem",
+                      marginTop: "0.5rem",
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "0.25rem",
+                    }}
+                  >
+                    <span>⚠️</span>
+                    {formik.errors.confirmPassword}
+                  </div>
+                )}
             </div>
 
             <button
